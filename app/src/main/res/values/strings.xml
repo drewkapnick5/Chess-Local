@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Project 1</string>
+    <string name="welcome">Chess</string>
+    <string name="button">Start Game</string>
+    <string name="player1">Player 1</string>
+    <string name="player2">Player 2</string>
+</resources>
