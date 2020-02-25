@@ -4,4 +4,6 @@
     <string name="button">Start Game</string>
     <string name="player1">Player 1</string>
     <string name="player2">Player 2</string>
+    <string name="instructions">Instructions</string>
+    <string name="cancel">Cancel</string>
 </resources>
