@@ -31,11 +31,11 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/Resign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/button" />
+                android:text="@string/resign" />
         </FrameLayout>
 
         <FrameLayout
@@ -49,11 +49,11 @@
             app:layout_constraintTop_toTopOf="@+id/frameLayout">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/Done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="@string/button" />
+                android:text="@string/done" />
 
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

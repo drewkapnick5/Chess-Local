@@ -31,7 +31,7 @@
             app:layout_constraintVertical_bias="0.65">
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/Resign"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -50,7 +50,7 @@
             app:layout_constraintVertical_bias="0.35000002">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/Done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

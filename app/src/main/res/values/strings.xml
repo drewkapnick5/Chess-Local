@@ -6,4 +6,6 @@
     <string name="player2">Player 2</string>
     <string name="instructions">Instructions</string>
     <string name="cancel">Cancel</string>
+    <string name="done">Done</string>
+    <string name="resign">Resign</string>
 </resources>
