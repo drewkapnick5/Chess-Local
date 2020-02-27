@@ -29,7 +29,7 @@ public class ChessBoard {
     /**
      * Reflection constants to switch between black and white
      */
-    int[] reflect = {0,7};
+    int[] reflect = {7,0};
 
     /**
      * Designations for rows and columns
@@ -60,22 +60,19 @@ public class ChessBoard {
     private static int g = 7;
     private static int h = 8;
 
+    // Board size in tiles
     private static int BOARD_SIZE = 8;
+    private static int PIECE_COUNT = 32;
 
     private static int initTopRow = 1;
     private static int initBottomRow = 0;
-
     private static int initRookColumn = 0;
-
     private static int initKnightColumn = 1;
-
     private static int initBishopColumn = 2;
-
     private static int initQueenColumn = 3;
 
-
     private static float col_init = .0625f;
-    private static float row_init = .9375f;
+    private static float row_init = .0625f;
 
     private float[] rows = new float[BOARD_SIZE];
     private float[] columns = new float[BOARD_SIZE];
@@ -93,12 +90,12 @@ public class ChessBoard {
     /**
      * Collection of all active pieces
      */
-    private Piece[] pieces = new Piece[32];
+    private Piece[] pieces = new Piece[PIECE_COUNT];
 
     /**
      * Internal representation of board and pieces
      */
-    private Piece[][] board = new Piece[8][8];
+    private Piece[][] board = new Piece[BOARD_SIZE][BOARD_SIZE];
 
     /**
      * The size of the board in pixels
@@ -153,7 +150,7 @@ public class ChessBoard {
             columns[i] = col_init;
             rows[i] = row_init;
             col_init += .125f;
-            row_init -= .125f;
+            row_init += .125f;
         }
 
         initializeBoard(context);
@@ -203,32 +200,47 @@ public class ChessBoard {
         for (int rowConstant : reflect) {
             // Pawns
             for (int i = 0; i < 8; i++) {
-                pieces[index].setX(columns[i]);
-                pieces[index].setY(rows[Math.abs(rowConstant - initTopRow)]);
+                int col = i;
+                int row = Math.abs(rowConstant - initTopRow);
+                pieces[index].setX(columns[col]);
+                pieces[index].setY(rows[row]);
+                board[row][col] = pieces[index];
                 index++;
             }
             // Rooks
             for (int colConstant : reflect) {
-                pieces[index].setX(columns[Math.abs(colConstant - initRookColumn)]);
-                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                int col = Math.abs(colConstant - initRookColumn);
+                int row = Math.abs(rowConstant - initBottomRow);
+                pieces[index].setX(columns[col]);
+                pieces[index].setY(rows[row]);
+                board[row][col] = pieces[index];
                 index++;
             }
             // Knights
             for (int colConstant : reflect) {
-                pieces[index].setX(columns[Math.abs(colConstant - initKnightColumn)]);
-                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                int col = Math.abs(colConstant - initKnightColumn);
+                int row = Math.abs(rowConstant - initBottomRow);
+                pieces[index].setX(columns[col]);
+                pieces[index].setY(rows[row]);
+                board[row][col] = pieces[index];
                 index++;
             }
             // Bishops
             for (int colConstant : reflect) {
-                pieces[index].setX(columns[Math.abs(colConstant - initBishopColumn)]);
-                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                int col = Math.abs(colConstant - initBishopColumn);
+                int row = Math.abs(rowConstant - initBottomRow);
+                pieces[index].setX(columns[col]);
+                pieces[index].setY(rows[row]);
+                board[row][col] = pieces[index];
                 index++;
             }
             // King/Queen
             for (int i = 0; i < 2; i++) {
-                pieces[index].setX(columns[initQueenColumn + i]);
-                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                int col = initQueenColumn + i;
+                int row = Math.abs(rowConstant - initBottomRow);
+                pieces[index].setX(columns[col]);
+                pieces[index].setY(rows[row]);
+                board[row][col] = pieces[index];
                 index++;
             }
 
