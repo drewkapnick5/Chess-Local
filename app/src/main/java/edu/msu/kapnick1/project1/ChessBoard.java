@@ -6,12 +6,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.ArrayList;
-import java.util.List;
+import edu.msu.kapnick1.project1.Piece.Bishop;
+import edu.msu.kapnick1.project1.Piece.King;
+import edu.msu.kapnick1.project1.Piece.Knight;
+import edu.msu.kapnick1.project1.Piece.Pawn;
+import edu.msu.kapnick1.project1.Piece.Piece;
+import edu.msu.kapnick1.project1.Piece.Queen;
+import edu.msu.kapnick1.project1.Piece.Rook;
+
 
 public class ChessBoard {
 
@@ -22,19 +27,9 @@ public class ChessBoard {
     final static float SCALE_IN_VIEW = 0.95f;
 
     /**
-     * Paint for outlining the area the board is in
+     * Reflection constants to switch between black and white
      */
-    private Paint outlinePaint;
-
-    /**
-     * Completed board bitmap
-     */
-    private Bitmap emptyBoard;
-
-    /**
-     * Collection of white pawn pieces
-     */
-    public ArrayList<Pawn> white_pawns = new ArrayList<Pawn>();
+    int[] reflect = {0,7};
 
     /**
      * Designations for rows and columns
@@ -56,23 +51,54 @@ public class ChessBoard {
     final static float col_b = 0.0625f *3;
     final static float col_a = 0.0625f;
 
-    private int a = 1;
-    private int b = 2;
-    private int c = 3;
-    private int d = 4;
-    private int e = 5;
-    private int f = 6;
-    private int g = 7;
-    private int h = 8;
+    private static int a = 1;
+    private static int b = 2;
+    private static int c = 3;
+    private static int d = 4;
+    private static int e = 5;
+    private static int f = 6;
+    private static int g = 7;
+    private static int h = 8;
+
+    private static int BOARD_SIZE = 8;
+
+    private static int initTopRow = 1;
+    private static int initBottomRow = 0;
+
+    private static int initRookColumn = 0;
+
+    private static int initKnightColumn = 1;
+
+    private static int initBishopColumn = 2;
+
+    private static int initQueenColumn = 3;
 
 
-    private float col_init = .0625f;
-    private float row_init = .9375f;
+    private static float col_init = .0625f;
+    private static float row_init = .9375f;
 
-    float [] rows = new float[9];
-    float [] columns = new float[9];
+    private float[] rows = new float[BOARD_SIZE];
+    private float[] columns = new float[BOARD_SIZE];
 
+    /**
+     * Paint for outlining the area the board is in
+     */
+    private Paint outlinePaint;
 
+    /**
+     * Completed board bitmap
+     */
+    private Bitmap emptyBoard;
+
+    /**
+     * Collection of all active pieces
+     */
+    private Piece[] pieces = new Piece[32];
+
+    /**
+     * Internal representation of board and pieces
+     */
+    private Piece[][] board = new Piece[8][8];
 
     /**
      * The size of the board in pixels
@@ -98,7 +124,7 @@ public class ChessBoard {
      * This variable is set to a piece we are dragging. If
      * we are not dragging, the variable is null.
      */
-    private Pawn dragging = null;
+    private Piece dragging = null;
 
     /**
      * Most recent relative X touch when dragging
@@ -110,11 +136,7 @@ public class ChessBoard {
      */
     private float lastRelY;
 
-    /**
-     * The name of the bundle keys to save the puzzle
-     */
-    private final static String LOCATIONS = "ChessBoard.locations";
-    private final static String IDS = "ChessBoard.ids";
+
 
     public ChessBoard(Context context) {
         // Load the empty chess board image
@@ -127,23 +149,90 @@ public class ChessBoard {
         outlinePaint.setStrokeWidth(5);
 
 
-        for (int i = 1; i < 9; i++) {
+        for (int i = 0; i < 8; i++) {
             columns[i] = col_init;
             rows[i] = row_init;
             col_init += .125f;
             row_init -= .125f;
         }
 
-//        white_pawns.add(new Pawn(context, R.drawable.chess_plt45, 1, columns[a], rows[2], columns[a], rows[3]));
-//        white_pawns.add(new Pawn(context, R.drawable.chess_plt45, 2, columns[b], rows[2], columns[b], rows[3]));
+        initializeBoard(context);
 
-        for (int i = 1; i < 9; i++) {
-            // Load the chess pawns
-            white_pawns.add(new Pawn(context, R.drawable.chess_plt45, i , columns[i], rows[2], columns[i], rows[3]));
+    }
+
+    public void initializeBoard(Context context) {
+        int idCount = 0;
+        boolean color = true;
+
+        for (int i = 0; i < 2; i++) {
+            // Pawns
+            for (int j = 0; j < 8; j++) {
+                pieces[idCount] = new Pawn(context, idCount, 0, 0, color);
+                idCount++;
+            }
+            // Rooks
+            for (int j = 0; j < 2; j++) {
+                pieces[idCount] = new Rook(context, idCount, 0, 0, color);
+                idCount++;
+            }
+            // Knight
+            for (int j = 0; j < 2; j++){
+                pieces[idCount] = new Knight(context, idCount, 0, 0, color);
+                idCount++;
+            }
+            // Bishop
+            for (int j = 0; j < 2; j++){
+                pieces[idCount] = new Bishop(context, idCount, 0, 0, color);
+                idCount++;
+            }
+            // King/Queen
+            pieces[idCount] = new Queen(context, idCount, 0, 0, color);
+            idCount++;
+            pieces[idCount] = new King(context, idCount, 0, 0, color);
+            idCount++;
+
+            color = !color;
         }
 
+        resetBoard();
+    }
 
+    public void resetBoard() {
+        int index = 0;
 
+        for (int rowConstant : reflect) {
+            // Pawns
+            for (int i = 0; i < 8; i++) {
+                pieces[index].setX(columns[i]);
+                pieces[index].setY(rows[Math.abs(rowConstant - initTopRow)]);
+                index++;
+            }
+            // Rooks
+            for (int colConstant : reflect) {
+                pieces[index].setX(columns[Math.abs(colConstant - initRookColumn)]);
+                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                index++;
+            }
+            // Knights
+            for (int colConstant : reflect) {
+                pieces[index].setX(columns[Math.abs(colConstant - initKnightColumn)]);
+                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                index++;
+            }
+            // Bishops
+            for (int colConstant : reflect) {
+                pieces[index].setX(columns[Math.abs(colConstant - initBishopColumn)]);
+                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                index++;
+            }
+            // King/Queen
+            for (int i = 0; i < 2; i++) {
+                pieces[index].setX(columns[initQueenColumn + i]);
+                pieces[index].setY(rows[Math.abs(rowConstant - initBottomRow)]);
+                index++;
+            }
+
+        }
     }
 
     public void draw(Canvas canvas) {
@@ -170,8 +259,8 @@ public class ChessBoard {
         canvas.drawBitmap(emptyBoard, 0, 0, null);
         canvas.restore();
 
-        for(Pawn pawn : white_pawns) {
-            pawn.draw(canvas, marginX, marginY, boardSize, scaleFactor);
+        for(Piece piece : pieces) {
+            piece.draw(canvas, marginX, marginY, boardSize, scaleFactor);
         }
 
     }
@@ -219,14 +308,10 @@ public class ChessBoard {
 
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
-        for(int p=white_pawns.size()-1; p>=0;  p--) {
-            if(white_pawns.get(p).hit(x, y, boardSize, scaleFactor/2)) {
+        for(int p=pieces.length-1; p>=0;  p--) {
+            if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
                 // We hit a piece!
-                dragging = white_pawns.get(p);
-
-                //Code implemented to solve drawing order problem
-                white_pawns.remove(dragging);
-                white_pawns.add(white_pawns.size(), dragging);
+                dragging = pieces[p];
 
                 lastRelX = x;
                 lastRelY = y;

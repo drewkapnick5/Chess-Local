@@ -1,100 +1,76 @@
-package edu.msu.kapnick1.project1;
+package edu.msu.kapnick1.project1.Piece;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Point;
-import android.util.Pair;
 
-import java.util.List;
+public class Piece {
 
-
-/**
- * As of now:
- * IMPLEMENTED: Pawns all spawn in and can move up one space, return to original space if let go,
- * and update their next move location
- * NOT IMPLEMENTED: No attack movement, cannot see other pieces, other pieces will be able to land on
- * pawn, initial two space move not currently valid
- */
-public class Pawn {
     /**
      * The image for the actual piece.
      */
-    private Bitmap pawn;
+    protected Bitmap piece;
 
     /**
      * x location.
      * We use relative x locations in the range 0-1 for the center
-     * of the puzzle piece.
+     * of the chess piece.
      * NEEDS TO BE CHANGED
      */
-    private float x;
+    protected float x;
 
     /**
      * y location
      * NEEDS TO BE CHANGED
      */
-    private float y;
+    protected float y;
 
     /**
-     * x location when the puzzle is solved
-     * NEEDS TO BE CHANGED
+     * Piece color
+     * True for white, False for black
      */
-    private float finalX;
-    float [] possX = new float[3];
-    //public Pair(.6f,.6f);
+    protected boolean color;
 
 
-
-
-
-    /**
-     * y location when the puzzle is solved
-     * NEEDS TO BE CHANGED
-     */
-    private float finalY;
-
-    private float beforeDragX;
-    private float beforeDragY;
+    protected float beforeDragX;
+    protected float beforeDragY;
 
     /**
      * We consider a valid move for a piece if it is within SNAP_DISTANCE
      */
-    final static float SNAP_DISTANCE = 0.07f;
+    protected final static float SNAP_DISTANCE = 0.07f;
 
     /**
-     * The pawn piece ID
+     * The chess piece ID
      */
-    private int id;
+    protected int id;
 
-    public int getId() {
-        return id;
-    }
+    /**
+     * The board piece is active and should be drawn
+     */
+    protected boolean active = true;
 
-    public Pawn(Context context, int pic, int id, float initialX, float initialY, float finalX, float finalY) {
-        this.finalX = finalX;
+
+    public Piece(Context context, int id, float initialX, float initialY, boolean white) {
+        /*this.finalX = finalX;
         this.finalY = finalY;
-        this.possX = possX;
+        this.possX = possX;*/
         //this.possY = possY;
         this.id = id;
         x = initialX;
         y = initialY;
         beforeDragX = x;
         beforeDragY = y;
-
-
-
-        pawn = BitmapFactory.decodeResource(context.getResources(), pic);
+        color = white;
     }
 
     /**
-     * Draw the puzzle piece
+     * Draw the chess piece
      * @param canvas Canvas we are drawing on
      * @param marginX Margin x value in pixels
      * @param marginY Margin y value in pixels
-     * @param boardSize Size we draw the puzzle in pixels
-     * @param scaleFactor Amount we scale the puzzle pieces when we draw them
+     * @param boardSize Size we draw the board in pixels
+     * @param scaleFactor Amount we scale the chess pieces when we draw them
      */
     public void draw(Canvas canvas, int marginX, int marginY,
                      int boardSize, float scaleFactor) {
@@ -109,15 +85,15 @@ public class Pawn {
         canvas.scale(scaleFactor/4, scaleFactor/4);
 
         // This magic code makes the center of the piece at 0, 0
-        canvas.translate(-pawn.getWidth() / 2f, -pawn.getHeight() / 2f);
+        canvas.translate(-piece.getWidth() / 2f, -piece.getHeight() / 2f);
 
         // Draw the bitmap
-        canvas.drawBitmap(pawn, 0, 0, null);
+        canvas.drawBitmap(piece, 0, 0, null);
         canvas.restore();
     }
 
     /**
-     * Test to see if we have touched a puzzle piece
+     * Test to see if we have touched a chess piece
      * @param testX X location as a normalized coordinate (0 to 1)
      * @param testY Y location as a normalized coordinate (0 to 1)
      * @param boardSize the size of the puzzle in pixels
@@ -129,18 +105,18 @@ public class Pawn {
 
         // Make relative to the location and size to the piece size
         int pX = (int)((testX - x) * boardSize / scaleFactor) +
-                pawn.getWidth() / 2;
+                piece.getWidth() / 2;
         int pY = (int)((testY - y) * boardSize / scaleFactor) +
-                pawn.getHeight() / 2;
+                piece.getHeight() / 2;
 
-        if(pX < 0 || pX >= pawn.getWidth() ||
-                pY < 0 || pY >= pawn.getHeight()) {
+        if(pX < 0 || pX >= piece.getWidth() ||
+                pY < 0 || pY >= piece.getHeight()) {
             return false;
         }
 
         // We are within the rectangle of the pawn.
         // Are we touching actual picture?
-        return (pawn.getPixel(pX, pY) & 0xff000000) != 0;
+        return (piece.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     /**
@@ -153,20 +129,68 @@ public class Pawn {
         y += dy;
     }
 
+    /**
+     * Gets x value
+     * @return x
+     */
     public float getX() {
         return x;
     }
 
+    /**
+     * Sets x value
+     * @param x new value
+     */
     public void setX(float x) {
-        this.x = x;
+        this.x = beforeDragX = x;
     }
 
+    /**
+     * Gets y value
+     * @return y
+     */
     public float getY() {
         return y;
     }
 
+    /**
+     * Sets y value
+     * @param y new value
+     */
     public void setY(float y) {
-        this.y = y;
+        this.y = beforeDragY = y;
+    }
+
+    /**
+     * Gets id value
+     * @return id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Find if piece is white
+     * @return True if white
+     */
+    public boolean isWhite() {
+        return color;
+    }
+
+    /**
+     * Find if piece is black
+     * @return True if black
+     */
+    public boolean isBlack() {
+        return !color;
+    }
+
+    /**
+     * Find if piece is active
+     * @return True if active
+     */
+    public boolean isActive() {
+        return active;
     }
 
     /**
@@ -195,7 +219,7 @@ public class Pawn {
 //        }
 
 
-        if(Math.abs(x - finalX) < SNAP_DISTANCE &&
+        /*if(Math.abs(x - finalX) < SNAP_DISTANCE &&
                 Math.abs(y - finalY) < SNAP_DISTANCE) {
 
             x = finalX;
@@ -205,7 +229,7 @@ public class Pawn {
             //finalX += .125f;
             finalY -= .125f;
             return true;
-        }
+        }*/
         x = beforeDragX;
         y = beforeDragY;
 
