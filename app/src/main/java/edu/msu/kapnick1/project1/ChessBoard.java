@@ -32,38 +32,18 @@ public class ChessBoard {
     int[] reflect = {7,0};
 
     /**
-     * Designations for rows and columns
+     * Board size in tiles
      */
-    final static float row_1 = 0.0625f *15;
-    final static float row_2 = 0.0625f *13;
-    final static float row_3 = 0.0625f *11;
-    final static float row_4 = 0.0625f *9;
-    final static float row_5 = 0.0625f *7;
-    final static float row_6 = 0.0625f *5;
-    final static float row_7 = 0.0625f *3;
-    final static float row_8 = 0.0625f;
-    final static float col_h = 0.0625f *15;
-    final static float col_g = 0.0625f *13;
-    final static float col_f = 0.0625f *11;
-    final static float col_e = 0.0625f *9;
-    final static float col_d = 0.0625f *7;
-    final static float col_c = 0.0625f *5;
-    final static float col_b = 0.0625f *3;
-    final static float col_a = 0.0625f;
-
-    private static int a = 1;
-    private static int b = 2;
-    private static int c = 3;
-    private static int d = 4;
-    private static int e = 5;
-    private static int f = 6;
-    private static int g = 7;
-    private static int h = 8;
-
-    // Board size in tiles
     private static int BOARD_SIZE = 8;
+
+    /**
+     * Number of pieces
+     */
     private static int PIECE_COUNT = 32;
 
+    /**
+     * Board Reset initial values
+     */
     private static int initTopRow = 1;
     private static int initBottomRow = 0;
     private static int initRookColumn = 0;
@@ -71,9 +51,15 @@ public class ChessBoard {
     private static int initBishopColumn = 2;
     private static int initQueenColumn = 3;
 
+    /**
+     * Initial center of tile
+     */
     private static float col_init = .0625f;
     private static float row_init = .0625f;
 
+    /**
+     * Corresponding relative location of each tile
+     */
     private float[] rows = new float[BOARD_SIZE];
     private float[] columns = new float[BOARD_SIZE];
 
