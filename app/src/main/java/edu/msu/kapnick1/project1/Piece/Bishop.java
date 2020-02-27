@@ -9,7 +9,7 @@ public class Bishop extends Piece {
 
     public Bishop(Context context, int id, float initialX, float initialY, boolean white) {
         super(context, id, initialX, initialY, white);
-        int pictureID = white ? R.drawable.chess_plt45 : R.drawable.chess_pdt45;
+        int pictureID = white ? R.drawable.chess_blt45 : R.drawable.chess_bdt45;
         piece = BitmapFactory.decodeResource(context.getResources(), pictureID);
     }
 }
