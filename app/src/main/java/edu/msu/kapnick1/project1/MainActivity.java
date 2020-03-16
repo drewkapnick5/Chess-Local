@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +17,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onStartChess(View view) {
+        EditText edit = (EditText)findViewById(R.id.editPlayer1);
+        EditText edit2 = (EditText)findViewById(R.id.editPlayer2);
+
+        String name1 = edit.getText().toString();
+        String name2 = edit2.getText().toString();
+
+        Player player1 = new Player((name1 == "") ? "Player1" : name1);
+        Player player2 = new Player((name2 == "") ? "Player2" : name2);
+
+
         Intent intent = new Intent(this, ChessActivity.class);
         startActivity(intent);
     }
@@ -36,4 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
 //        builder.create().show();
     }
+
+
 }

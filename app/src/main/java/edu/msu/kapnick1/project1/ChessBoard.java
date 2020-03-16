@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -50,6 +51,8 @@ public class ChessBoard {
     private static int initKnightColumn = 1;
     private static int initBishopColumn = 2;
     private static int initQueenColumn = 3;
+
+    private static String LOCATIONS = "board.Locations";
 
     /**
      * Initial center of tile
@@ -341,6 +344,53 @@ public class ChessBoard {
         }
 
         return false;
+    }
+
+    public void saveInstanceState(Bundle bundle) {
+
+        float [] locations = new float[PIECE_COUNT * 2];
+//        int [] ids = new int[pieces.size()];
+
+//        for (int i = 0; i < pieces.size(); i++) {
+//            PuzzlePiece piece = pieces.get(i);
+//            locations[i*2] = piece.getX();
+//            locations[i*2+1] = piece.getY();
+//            ids[i] = piece.getId();
+//        }
+
+        bundle.putFloatArray(LOCATIONS, locations);
+//        bundle.putIntArray(IDS, ids);
+
+    }
+
+
+    public void loadInstanceState(Bundle bundle) {
+        float [] locations = bundle.getFloatArray(LOCATIONS);
+//        int [] ids = bundle.getIntArray(IDS);
+//
+//        for(int i=0; i<ids.length-1; i++) {
+//
+//            // Find the corresponding piece
+//            // We don't have to test if the piece is at i already,
+//            // since the loop below will fall out without it moving anything
+//            for(int j=i+1;  j<ids.length;  j++) {
+//                if(ids[i] == pieces.get(j).getId()) {
+//                    // We found it
+//                    // Yah...
+//                    // Swap the pieces
+//                    PuzzlePiece t = pieces.get(i);
+//                    pieces.set(i, pieces.get(j));
+//                    pieces.set(j, t);
+//                }
+//            }
+//        }
+//
+//        for(int i=0;  i<pieces.size(); i++) {
+//            PuzzlePiece piece = pieces.get(i);
+//            piece.setX(locations[i*2]);
+//            piece.setY(locations[i*2+1]);
+//        }
+
     }
 
 
