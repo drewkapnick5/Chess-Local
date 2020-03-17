@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 
+import java.util.List;
+
 public class Piece {
 
     /**
@@ -198,38 +200,26 @@ public class Piece {
      * answer, snap to the correct answer exactly.
      * @return
      */
-    public boolean maybeSnap() {
+    public boolean maybeSnap(List<Float> poss_moves) {
+        int a = poss_moves.size();
 
-//        for (float pX : possX && float pY : possY){
-//            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
-//                    Math.abs(y - finalY) < SNAP_DISTANCE) {
-//
-//                x = finalX;
-//                y = finalY;
-//                beforeDragX = x;
-//                beforeDragY = y;
-//                //finalX += .125f;
-//                finalY -= .125f;
-//                return true;
-//            }
-//            x = beforeDragX;
-//            y = beforeDragY;
-//
-//            return false;
-//        }
+        for (int i = 0, j = 1; i < poss_moves.size(); i+= 2, j+= 2) {
+            float finalX = poss_moves.get(i);
+            float finalY = poss_moves.get(j);
 
+            if (Math.abs(x - finalX) < SNAP_DISTANCE &&
+                    Math.abs(y - finalY) < SNAP_DISTANCE) {
 
-        /*if(Math.abs(x - finalX) < SNAP_DISTANCE &&
-                Math.abs(y - finalY) < SNAP_DISTANCE) {
+                x = finalX;
+                y = finalY;
+                beforeDragX = x;
+                beforeDragY = y;
+                //finalX += .125f;
+                finalY -= .125f;
+                return true;
+            }
+        }
 
-            x = finalX;
-            y = finalY;
-            beforeDragX = x;
-            beforeDragY = y;
-            //finalX += .125f;
-            finalY -= .125f;
-            return true;
-        }*/
         x = beforeDragX;
         y = beforeDragY;
 
@@ -240,8 +230,8 @@ public class Piece {
      * Determine if this piece is snapped in place
      * @return true if snapped into place
      */
-    public boolean isSnapped() {
-        return maybeSnap();
-
-    }
+//    public boolean isSnapped() {
+//        return maybeSnap();
+//
+//    }
 }

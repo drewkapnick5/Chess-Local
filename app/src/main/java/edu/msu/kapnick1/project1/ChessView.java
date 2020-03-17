@@ -80,13 +80,13 @@ public class ChessView extends View {
     }
 
 
-//    public void putToBundle(String key, Bundle bundle) {
-////        bundle.putSerializable(key, this.chessBoard);
-//    }
-//
-//    public void getFromBundle(String key, Bundle bundle) {
-////        board = (ChessBoard)bundle.getSerializable(key);
-//
-//    }
+    public void putToBundle(String key, Bundle bundle) {
+//        bundle.putSerializable(key, this.chessBoard);
+    }
+
+    public void getFromBundle(String key, Bundle bundle) {
+//        board = (ChessBoard)bundle.getSerializable(key);
+
+    }
 
 }
