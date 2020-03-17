@@ -47,7 +47,7 @@ public class ChessView extends View {
     }
 
     private void init(AttributeSet attrs, int defStyle) {
-        chessBoard = new ChessBoard(getContext());
+        chessBoard = new ChessBoard(getContext(), this);
 
 
     }
@@ -59,6 +59,7 @@ public class ChessView extends View {
         chessBoard.draw(canvas);
     }
 
+
     public ChessBoard getBoard() {
         return chessBoard;
     }
@@ -68,7 +69,9 @@ public class ChessView extends View {
      * @param bundle The bundle we save to
      */
     public void saveInstanceState(Bundle bundle) {
-        chessBoard.saveInstanceState(bundle);
+//        chessBoard.saveInstanceState(bundle);
+        chessBoard.putToBundle("board", bundle);
+
     }
 
     /**
@@ -76,17 +79,9 @@ public class ChessView extends View {
      * @param bundle The bundle we save to
      */
     public void loadInstanceState(Bundle bundle) {
-        chessBoard.loadInstanceState(bundle);
+//        chessBoard.loadInstanceState(bundle);
+        chessBoard.getFromBundle("board", bundle);
     }
 
-
-//    public void putToBundle(String key, Bundle bundle) {
-////        bundle.putSerializable(key, this.chessBoard);
-//    }
-//
-//    public void getFromBundle(String key, Bundle bundle) {
-////        board = (ChessBoard)bundle.getSerializable(key);
-//
-//    }
 
 }

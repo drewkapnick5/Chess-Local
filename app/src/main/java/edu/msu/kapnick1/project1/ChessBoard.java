@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.io.Serializable;
+
 import edu.msu.kapnick1.project1.Piece.Bishop;
 import edu.msu.kapnick1.project1.Piece.King;
 import edu.msu.kapnick1.project1.Piece.Knight;
@@ -122,9 +124,9 @@ public class ChessBoard {
      */
     private float lastRelY;
 
+    private View view;
 
-
-    public ChessBoard(Context context) {
+    public ChessBoard(Context context, View v) {
         // Load the empty chess board image
         emptyBoard = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_board);
 
@@ -143,6 +145,7 @@ public class ChessBoard {
         }
 
         initializeBoard(context);
+        view = v;
 
     }
 
@@ -346,52 +349,50 @@ public class ChessBoard {
         return false;
     }
 
-    public void saveInstanceState(Bundle bundle) {
 
-        float [] locations = new float[PIECE_COUNT * 2];
-//        int [] ids = new int[pieces.size()];
+    /**
+     * Save the view state to a bundle
+     * @param key key name to use in the bundle
+     * @param bundle bundle to save to
+     */
+    public void putToBundle(String key, Bundle bundle) {
+//        bundle.putSerializable(key, params);
+//    }
 
-//        for (int i = 0; i < pieces.size(); i++) {
-//            PuzzlePiece piece = pieces.get(i);
-//            locations[i*2] = piece.getX();
-//            locations[i*2+1] = piece.getY();
-//            ids[i] = piece.getId();
-//        }
+//    public void saveInstanceState(Bundle bundle) {
 
-        bundle.putFloatArray(LOCATIONS, locations);
-//        bundle.putIntArray(IDS, ids);
+        Serializable [] params = new Serializable[PIECE_COUNT];
 
-    }
+        for (int i = 0; i < PIECE_COUNT; i++) {
+            pieces[i].putToBundle(Integer.toString(i), bundle);
+//            bundle.putSerializable(Integer.toString(i), pieces[i].getParams());
+        }
 
-
-    public void loadInstanceState(Bundle bundle) {
-        float [] locations = bundle.getFloatArray(LOCATIONS);
-//        int [] ids = bundle.getIntArray(IDS);
-//
-//        for(int i=0; i<ids.length-1; i++) {
-//
-//            // Find the corresponding piece
-//            // We don't have to test if the piece is at i already,
-//            // since the loop below will fall out without it moving anything
-//            for(int j=i+1;  j<ids.length;  j++) {
-//                if(ids[i] == pieces.get(j).getId()) {
-//                    // We found it
-//                    // Yah...
-//                    // Swap the pieces
-//                    PuzzlePiece t = pieces.get(i);
-//                    pieces.set(i, pieces.get(j));
-//                    pieces.set(j, t);
-//                }
-//            }
-//        }
-//
-//        for(int i=0;  i<pieces.size(); i++) {
-//            PuzzlePiece piece = pieces.get(i);
-//            piece.setX(locations[i*2]);
-//            piece.setY(locations[i*2+1]);
-//        }
+//        bundle.putSerializable(key, params);
 
     }
 
+    /**
+     * Get the view state from a bundle
+     * @param key key name to use in bundle
+     * @param bundle bundle to load from
+     */
+    public void getFromBundle(String key, Bundle bundle) {
+//        params = (Parameters)bundle.getSerializable(key);
+//
+//        // Ensure the options are all set
+//        setColor(params.color);
+//        setImagePath(params.piece);
+//    }
+
+//    public void loadInstanceState(Bundle bundle) {
+
+
+        for (int i = 0; i < PIECE_COUNT; i++) {
+            pieces[i].getFromBundle(Integer.toString(i), bundle);
+        }
+//        Serializable params = bundle.getSerializable(key);
+
+    }
 
 }

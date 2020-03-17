@@ -10,6 +10,6 @@ public class Rook extends Piece {
     public Rook(Context context, int id, float initialX, float initialY, boolean white) {
         super(context, id, initialX, initialY, white);
         int pictureID = white ? R.drawable.chess_rlt45 : R.drawable.chess_rdt45;
-        piece = BitmapFactory.decodeResource(context.getResources(), pictureID);
+        params.piece = BitmapFactory.decodeResource(context.getResources(), pictureID);
     }
 }

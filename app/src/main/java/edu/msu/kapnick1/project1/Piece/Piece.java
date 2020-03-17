@@ -3,34 +3,11 @@ package edu.msu.kapnick1.project1.Piece;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.os.Bundle;
+
+import java.io.Serializable;
 
 public class Piece {
-
-    /**
-     * The image for the actual piece.
-     */
-    protected Bitmap piece;
-
-    /**
-     * x location.
-     * We use relative x locations in the range 0-1 for the center
-     * of the chess piece.
-     * NEEDS TO BE CHANGED
-     */
-    protected float x;
-
-    /**
-     * y location
-     * NEEDS TO BE CHANGED
-     */
-    protected float y;
-
-    /**
-     * Piece color
-     * True for white, False for black
-     */
-    protected boolean color;
-
 
     protected float beforeDragX;
     protected float beforeDragY;
@@ -40,28 +17,18 @@ public class Piece {
      */
     protected final static float SNAP_DISTANCE = 0.07f;
 
-    /**
-     * The chess piece ID
-     */
-    protected int id;
-
-    /**
-     * The board piece is active and should be drawn
-     */
-    protected boolean active = true;
-
 
     public Piece(Context context, int id, float initialX, float initialY, boolean white) {
         /*this.finalX = finalX;
         this.finalY = finalY;
         this.possX = possX;*/
         //this.possY = possY;
-        this.id = id;
-        x = initialX;
-        y = initialY;
-        beforeDragX = x;
-        beforeDragY = y;
-        color = white;
+        params.id = id;
+        params.x = initialX;
+        params.y = initialY;
+        beforeDragX = params.x;
+        beforeDragY = params.y;
+        params.color = white;
     }
 
     /**
@@ -79,16 +46,16 @@ public class Piece {
         // Convert x,y to pixels and add the margin, then draw
         //x = finalX;
         //y = finalY;
-        canvas.translate(marginX + x * boardSize, marginY + y * boardSize);
+        canvas.translate(marginX + params.x * boardSize, marginY + params.y * boardSize);
 
         // Scale it to the right size
         canvas.scale(scaleFactor/4, scaleFactor/4);
 
         // This magic code makes the center of the piece at 0, 0
-        canvas.translate(-piece.getWidth() / 2f, -piece.getHeight() / 2f);
+        canvas.translate(-params.piece.getWidth() / 2f, -params.piece.getHeight() / 2f);
 
         // Draw the bitmap
-        canvas.drawBitmap(piece, 0, 0, null);
+        canvas.drawBitmap(params.piece, 0, 0, null);
         canvas.restore();
     }
 
@@ -104,19 +71,19 @@ public class Piece {
                        int boardSize, float scaleFactor) {
 
         // Make relative to the location and size to the piece size
-        int pX = (int)((testX - x) * boardSize / scaleFactor) +
-                piece.getWidth() / 2;
-        int pY = (int)((testY - y) * boardSize / scaleFactor) +
-                piece.getHeight() / 2;
+        int pX = (int)((testX - params.x) * boardSize / scaleFactor) +
+                params.piece.getWidth() / 2;
+        int pY = (int)((testY - params.y) * boardSize / scaleFactor) +
+                params.piece.getHeight() / 2;
 
-        if(pX < 0 || pX >= piece.getWidth() ||
-                pY < 0 || pY >= piece.getHeight()) {
+        if(pX < 0 || pX >= params.piece.getWidth() ||
+                pY < 0 || pY >= params.piece.getHeight()) {
             return false;
         }
 
         // We are within the rectangle of the pawn.
         // Are we touching actual picture?
-        return (piece.getPixel(pX, pY) & 0xff000000) != 0;
+        return (params.piece.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     /**
@@ -125,8 +92,8 @@ public class Piece {
      * @param dy y amount to move
      */
     public void move(float dx, float dy) {
-        x += dx;
-        y += dy;
+        params.x += dx;
+        params.y += dy;
     }
 
     /**
@@ -134,7 +101,7 @@ public class Piece {
      * @return x
      */
     public float getX() {
-        return x;
+        return params.x;
     }
 
     /**
@@ -142,7 +109,7 @@ public class Piece {
      * @param x new value
      */
     public void setX(float x) {
-        this.x = beforeDragX = x;
+        params.x = beforeDragX = x;
     }
 
     /**
@@ -150,7 +117,7 @@ public class Piece {
      * @return y
      */
     public float getY() {
-        return y;
+        return params.y;
     }
 
     /**
@@ -158,7 +125,7 @@ public class Piece {
      * @param y new value
      */
     public void setY(float y) {
-        this.y = beforeDragY = y;
+        params.y = beforeDragY = y;
     }
 
     /**
@@ -166,7 +133,7 @@ public class Piece {
      * @return id
      */
     public int getId() {
-        return id;
+        return params.id;
     }
 
     /**
@@ -174,7 +141,7 @@ public class Piece {
      * @return True if white
      */
     public boolean isWhite() {
-        return color;
+        return params.color;
     }
 
     /**
@@ -182,16 +149,32 @@ public class Piece {
      * @return True if black
      */
     public boolean isBlack() {
-        return !color;
+        return !params.color;
     }
+
+    /**
+     * Color to set the piece to
+     * @param color Black or white
+     */
+    public void setColor(boolean color) { params.color = color; }
+
+    /**
+     * Set the image
+     * @param piece Image set to
+     */
+    public void setImagePath(Bitmap piece) { params.piece = piece; }
 
     /**
      * Find if piece is active
      * @return True if active
      */
     public boolean isActive() {
-        return active;
+        return params.active;
     }
+
+    public Parameters getParams() { return params; }
+
+    public void setParams(Parameters params) {this.params = params;}
 
     /**
      * If we are within SNAP_DISTANCE of the correct
@@ -202,7 +185,7 @@ public class Piece {
 
 //        for (float pX : possX && float pY : possY){
 //            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
-//                    Math.abs(y - finalY) < SNAP_DISTANCE) {
+//                    Math.abs(y - finalY)  < SNAP_DISTANCE) {
 //
 //                x = finalX;
 //                y = finalY;
@@ -230,8 +213,8 @@ public class Piece {
             finalY -= .125f;
             return true;
         }*/
-        x = beforeDragX;
-        y = beforeDragY;
+        params.x = beforeDragX;
+        params.y = beforeDragY;
 
         return false;
     }
@@ -244,4 +227,70 @@ public class Piece {
         return maybeSnap();
 
     }
+
+
+    /**
+     * Save the view state to a bundle
+     * @param key key name to use in the bundle
+     * @param bundle bundle to save to
+     */
+    public void putToBundle(String key, Bundle bundle) {
+        bundle.putSerializable(key, params);
+    }
+
+    /**
+     * Get the view state from a bundle
+     * @param key key name to use in bundle
+     * @param bundle bundle to load from
+     */
+    public void getFromBundle(String key, Bundle bundle) {
+        Parameters params = (Parameters)bundle.getSerializable(key);
+
+        // Ensure the options are all set
+        setColor(params.color);
+        setImagePath(params.piece);
+        setX(params.x);
+        setY(params.y);
+    }
+
+    protected static class Parameters implements Serializable {
+        /**
+         * The image for the actual piece.
+         */
+        protected Bitmap piece;
+
+        /**
+         * x location.
+         * We use relative x locations in the range 0-1 for the center
+         * of the chess piece.
+         * NEEDS TO BE CHANGED
+         */
+        protected float x;
+
+        /**
+         * y location
+         * NEEDS TO BE CHANGED
+         */
+        protected float y;
+
+        /**
+         * Piece color
+         * True for white, False for black
+         */
+        protected boolean color;
+
+
+        /**
+         * The chess piece ID
+         */
+        protected int id;
+
+        /**
+         * The board piece is active and should be drawn
+         */
+        protected boolean active = true;
+    }
+
+    protected Parameters params = new Parameters();
+
 }
