@@ -9,6 +9,9 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
+import java.util.ArrayList;
+import java.util.List;
+
 
 import java.io.Serializable;
 
@@ -126,7 +129,15 @@ public class ChessBoard {
 
     private View view;
 
+<<<<<<< HEAD
     public ChessBoard(Context context, View v) {
+=======
+    List<Float> poss_moves = new ArrayList<>();
+
+
+
+    public ChessBoard(Context context) {
+>>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
         // Load the empty chess board image
         emptyBoard = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_board);
 
@@ -316,6 +327,8 @@ public class ChessBoard {
             if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
                 // We hit a piece!
                 dragging = pieces[p];
+                poss_moves = calc_moves(dragging);
+
 
                 lastRelX = x;
                 lastRelY = y;
@@ -336,19 +349,46 @@ public class ChessBoard {
     private boolean onReleased(View view, float x, float y) {
 
         if(dragging != null) {
-            if(dragging.maybeSnap()) {
+            if(dragging.maybeSnap(poss_moves)) {
                 // We have snapped into a valid move
                 view.invalidate();
 
             }
             view.invalidate();
             dragging = null;
+            poss_moves.clear();
             return true;
         }
 
         return false;
     }
 
+<<<<<<< HEAD
+=======
+    private List<Float> calc_moves(Piece dragging){
+        // Calculates white pawn movement
+        if (dragging.getId() < 8){
+            poss_moves.add(dragging.getX());
+            poss_moves.add(dragging.getY()-.125f);
+            if (dragging.getY() == .8125f){
+                poss_moves.add(dragging.getX());
+                poss_moves.add(dragging.getY() - .25f);
+            }
+        }
+        // Calculates black pawn movement
+        if (dragging.getId() > 15 && dragging.getId() < 24){
+            poss_moves.add(dragging.getX());
+            poss_moves.add(dragging.getY()+.125f);
+            if (dragging.getY() == .1875f){
+                poss_moves.add(dragging.getX());
+                poss_moves.add(dragging.getY() + .25f);
+            }
+        }
+        return poss_moves;
+    }
+
+    public void saveInstanceState(Bundle bundle) {
+>>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
 
     /**
      * Save the view state to a bundle
