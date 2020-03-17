@@ -129,15 +129,11 @@ public class ChessBoard {
 
     private View view;
 
-<<<<<<< HEAD
-    public ChessBoard(Context context, View v) {
-=======
     List<Float> poss_moves = new ArrayList<>();
 
 
 
-    public ChessBoard(Context context) {
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
+    public ChessBoard(Context context, View v) {
         // Load the empty chess board image
         emptyBoard = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_board);
 
@@ -363,8 +359,6 @@ public class ChessBoard {
         return false;
     }
 
-<<<<<<< HEAD
-=======
     private List<Float> calc_moves(Piece dragging){
         // Calculates white pawn movement
         if (dragging.getId() < 8){
@@ -387,8 +381,7 @@ public class ChessBoard {
         return poss_moves;
     }
 
-    public void saveInstanceState(Bundle bundle) {
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
+//    public void saveInstanceState(Bundle bundle) {
 
     /**
      * Save the view state to a bundle

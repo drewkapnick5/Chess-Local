@@ -5,40 +5,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 
-<<<<<<< HEAD
 import java.io.Serializable;
-=======
 import java.util.List;
 
 public class Piece {
 
-    /**
-     * The image for the actual piece.
-     */
-    protected Bitmap piece;
-
-    /**
-     * x location.
-     * We use relative x locations in the range 0-1 for the center
-     * of the chess piece.
-     * NEEDS TO BE CHANGED
-     */
-    protected float x;
-
-    /**
-     * y location
-     * NEEDS TO BE CHANGED
-     */
-    protected float y;
-
-    /**
-     * Piece color
-     * True for white, False for black
-     */
-    protected boolean color;
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
-
-public class Piece {
 
     protected float beforeDragX;
     protected float beforeDragY;
@@ -214,8 +185,6 @@ public class Piece {
      */
     public boolean maybeSnap(List<Float> poss_moves) {
         int a = poss_moves.size();
-
-<<<<<<< HEAD
 //        for (float pX : possX && float pY : possY){
 //            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
 //                    Math.abs(y - finalY)  < SNAP_DISTANCE) {
@@ -233,40 +202,33 @@ public class Piece {
 //
 //            return false;
 //        }
-=======
         for (int i = 0, j = 1; i < poss_moves.size(); i+= 2, j+= 2) {
             float finalX = poss_moves.get(i);
             float finalY = poss_moves.get(j);
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
 
-            if (Math.abs(x - finalX) < SNAP_DISTANCE &&
-                    Math.abs(y - finalY) < SNAP_DISTANCE) {
+            if (Math.abs(params.x - finalX) < SNAP_DISTANCE &&
+                    Math.abs(params.y - finalY) < SNAP_DISTANCE) {
 
-                x = finalX;
-                y = finalY;
-                beforeDragX = x;
-                beforeDragY = y;
+                params.x = finalX;
+                params.y = finalY;
+                beforeDragX = params.x;
+                beforeDragY = params.y;
                 //finalX += .125f;
                 finalY -= .125f;
                 return true;
             }
         }
 
-<<<<<<< HEAD
-            x = finalX;
-            y = finalY;
-            beforeDragX = x;
-            beforeDragY = y;
-            //finalX += .125f;
-            finalY -= .125f;
-            return true;
-        }*/
+//            params.x = finalX;
+//            params.y = finalY;
+//            beforeDragX = params.x;
+//            beforeDragY = params.y;
+//            //finalX += .125f;
+//            finalY -= .125f;
+//            return true;
+
         params.x = beforeDragX;
         params.y = beforeDragY;
-=======
-        x = beforeDragX;
-        y = beforeDragY;
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
 
         return false;
     }
@@ -275,11 +237,10 @@ public class Piece {
      * Determine if this piece is snapped in place
      * @return true if snapped into place
      */
-<<<<<<< HEAD
-    public boolean isSnapped() {
-        return maybeSnap();
 
-    }
+//    public boolean isSnapped() {
+//        return maybeSnap();
+//    }
 
 
     /**
@@ -342,14 +303,9 @@ public class Piece {
          * The board piece is active and should be drawn
          */
         protected boolean active = true;
+
     }
 
     protected Parameters params = new Parameters();
 
-=======
-//    public boolean isSnapped() {
-//        return maybeSnap();
-//
-//    }
->>>>>>> 2b882164d9031090472ae4fb7e4bbd1409747c34
 }
