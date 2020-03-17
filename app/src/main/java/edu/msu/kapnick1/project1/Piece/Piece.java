@@ -184,7 +184,6 @@ public class Piece {
      * @return
      */
     public boolean maybeSnap(List<Float> poss_moves) {
-        int a = poss_moves.size();
 //        for (float pX : possX && float pY : possY){
 //            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
 //                    Math.abs(y - finalY)  < SNAP_DISTANCE) {
