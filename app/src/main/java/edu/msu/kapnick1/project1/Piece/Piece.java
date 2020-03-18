@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
+import android.util.Pair;
 
 import java.io.Serializable;
+import java.nio.channels.FileLock;
 import java.util.List;
 
 public class Piece {
@@ -183,7 +185,7 @@ public class Piece {
      * answer, snap to the correct answer exactly.
      * @return
      */
-    public boolean maybeSnap(List<Float> poss_moves) {
+    public boolean maybeSnap(List<Pair> poss_moves) {
 //        for (float pX : possX && float pY : possY){
 //            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
 //                    Math.abs(y - finalY)  < SNAP_DISTANCE) {
@@ -201,9 +203,10 @@ public class Piece {
 //
 //            return false;
 //        }
-        for (int i = 0, j = 1; i < poss_moves.size(); i+= 2, j+= 2) {
-            float finalX = poss_moves.get(i);
-            float finalY = poss_moves.get(j);
+        for (int i = 0, j = 1; i < poss_moves.size(); i++, j+= 2) {
+            Pair<Float, Float> pair = poss_moves.get(i);
+            float finalX = pair.first;
+            float finalY = pair.second;
 
             if (Math.abs(params.x - finalX) < SNAP_DISTANCE &&
                     Math.abs(params.y - finalY) < SNAP_DISTANCE) {

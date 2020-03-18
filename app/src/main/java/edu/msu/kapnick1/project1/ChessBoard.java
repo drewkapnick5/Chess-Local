@@ -7,8 +7,11 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
+
+import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -129,7 +132,9 @@ public class ChessBoard {
 
     private View view;
 
-    List<Float> poss_moves = new ArrayList<>();
+    List<Pair> poss_moves = new ArrayList<>();
+    List<Pair> test_moves = new ArrayList<>();
+
 
 
 
@@ -359,256 +364,200 @@ public class ChessBoard {
         return false;
     }
 
-    private List<Float> calc_moves(Piece dragging){
-        /**
-         * Pawn moves
-         */
+    private List<Pair> calc_moves(Piece dragging){
+        float curX = dragging.getX();
+        float curY = dragging.getY();
+
         // Calculates white pawn movement
         if (dragging.getId() < 8){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             //move up
             if(!(curY - .125f < .0625f)){
-                poss_moves.add(curX);
-                poss_moves.add(curY - .125f);
+                poss_moves.add(new Pair<>(curX, curY - .125f));
             }
             //determine move from initial position
             if (dragging.getY() == .8125f){
-                poss_moves.add(curX);
-                poss_moves.add(curY - .25f);
+                poss_moves.add(new Pair<>(curX, curY - .25f));
             }
         }
         // Calculates black pawn movement
         if (dragging.getId() > 15 && dragging.getId() < 24){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             //move down
             if(!(curY + .125f > .9375f)){
-                poss_moves.add(curX);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX, curY + .125f));
             }
             //determine move from initial position
             if (dragging.getY() == .1875f){
-                poss_moves.add(dragging.getX());
-                poss_moves.add(dragging.getY() + .25f);
+                poss_moves.add(new Pair<>(curX, curY + .25f));
             }
         }
 
-        /**
-         * Rook moves
-         */
+
         // Calculates rook movement
         if (dragging.getId()  > 7 && dragging.getId() < 10 || dragging.getId()  > 23 && dragging.getId() < 26){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
+            boolean u_block = false;
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //move up
                 if(!(curY - filler < .0625f)){
-                    poss_moves.add(curX);
-                    poss_moves.add(curY - filler);
+                    if(!u_block){
+                        poss_moves.add(new Pair<>(curX, curY - filler));
+                    }
                 }
                 //move down
                 if(!(curY + filler > .9375f)){
-                    poss_moves.add(curX);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX, curY + filler));
                 }
                 //move right
                 if(!(curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY);
+                    poss_moves.add(new Pair<>(curX + filler, curY));
                 }
                 //move left
                 if(!(curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY);
+                    poss_moves.add(new Pair<>(curX - filler, curY));
                 }
             }
 
         }
 
 
-        /**
-         * Bishop moves
-         */
+
         // Calculates bishop movement
         if (dragging.getId()  > 11 && dragging.getId() < 14 || dragging.getId()  > 27 && dragging.getId() < 30){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //up-right
                 if(!(curY - filler < .0625f || curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY - filler);
+                    poss_moves.add(new Pair<>(curX + filler, curY - filler));
                 }
                 //up-left
                 if(!(curY - filler < .0625f || curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY - filler);
+                    poss_moves.add(new Pair<>(curX - filler, curY - filler));
                 }
                 //down-right
                 if(!(curY + filler > .9375f || curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX + filler, curY + filler));
                 }
                 //down-left
                 if(!(curY + filler > .9375f || curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX - filler, curY + filler));
                 }
             }
         }
 
 
-        /**
-         * Knight moves
-         */
+
         // Calculates knight movement
         if (dragging.getId()  > 9 && dragging.getId() < 12 || dragging.getId()  > 25 && dragging.getId() < 28){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             //up2-right
             if(!(curY - 2*.125f < .0625f || curX + .125f > .9375f)){
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY - 2*.125f);
+                poss_moves.add(new Pair<>(curX + .125f, curY - 2*.125f));
             }
             //up-right2
             if(!(curY - .125f < .0625f || curX + 2*.125f > .9375f)){
-                poss_moves.add(curX + 2*.125f);
-                poss_moves.add(curY - .125f);
+                poss_moves.add(new Pair<>(curX + 2*.125f, curY - .125f));
             }
             //up2-left
             if(!(curY - 2*.125f < .0625f || curX - .125f < .0625f)){
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY - 2*.125f);
+                poss_moves.add(new Pair<>(curX - .125f, curY - 2*.125f));
             }
             //up-left2
             if(!(curY - .125f < .0625f || curX - 2*.125f < .0625f)){
-                poss_moves.add(curX - 2*.125f);
-                poss_moves.add(curY - .125f);
-            }
+                poss_moves.add(new Pair<>(curX - 2*.125f, curY - .125f));
+        }
             //down2-right
             if(!(curY + 2*.125f > .9375f || curX + .125f > .9375f)){
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY + 2*.125f);
+                poss_moves.add(new Pair<>(curX + .125f, curY + 2*.125f));
             }
             //down-right2
             if(!(curY + .125f > .9375f || curX + 2*.125f > .9375f)){
-                poss_moves.add(curX + 2*.125f);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX + 2*.125f, curY + .125f));
             }
             //down2-left
             if(!(curY + 2*.125f > .9375f || curX - .125f < .0625f)){
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY + 2*.125f);
+                poss_moves.add(new Pair<>(curX - .125f, curY + 2*.125f));
             }
             //down-left2
             if(!(curY + .125f > .9375f || curX - 2*.125f < .0625f)){
-                poss_moves.add(curX - 2*.125f);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX - 2*.125f, curY + .125f));
             }
         }
 
 
-        /**
-         * Queen moves
-         */
+
         // Calculates queen movement
         if (dragging.getId()  == 14 || dragging.getId()  == 30){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //move up
                 if(!(curY - filler < .0625f)){
-                    poss_moves.add(curX);
-                    poss_moves.add(curY - filler);
+                    poss_moves.add(new Pair<>(curX, curY - filler));
                 }
                 //move down
                 if(!(curY + filler > .9375f)){
-                    poss_moves.add(curX);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX, curY + filler));
                 }
                 //move right
                 if(!(curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY);
+                    poss_moves.add(new Pair<>(curX + filler, curY));
                 }
                 //move left
                 if(!(curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY);
+                    poss_moves.add(new Pair<>(curX - filler, curY));
                 }
+
 
                 //up-right
                 if(!(curY - filler < .0625f || curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY - filler);
+                    poss_moves.add(new Pair<>(curX + filler, curY - filler));
                 }
                 //up-left
                 if(!(curY - filler < .0625f || curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY - filler);
+                    poss_moves.add(new Pair<>(curX - filler, curY - filler));
                 }
                 //down-right
                 if(!(curY + filler > .9375f || curX + filler > .9375f)){
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX + filler, curY + filler));
                 }
                 //down-left
                 if(!(curY + filler > .9375f || curX - filler < .0625f)){
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY + filler);
+                    poss_moves.add(new Pair<>(curX - filler, curY + filler));
                 }
             }
         }
 
 
-        /**
-         * King moves
-         */
+
         // Calculates king movement
         if (dragging.getId()  == 15){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
             //move up
             if(!(curY - .125f < .0625f)){
-                poss_moves.add(curX);
-                poss_moves.add(curY - .125f);
+                poss_moves.add(new Pair<>(curX, curY - .125f));
             }
             //move down
             if(!(curY + .125f > .9375f)){
-                poss_moves.add(curX);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX, curY + .125f));
             }
             //move right
             if(!(curX + .125f > .9375f)){
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY);
+                poss_moves.add(new Pair<>(curX + .125f, curY));
             }
             //move left
             if(!(curX - .125f < .0625f)){
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY);
+                poss_moves.add(new Pair<>(curX - .125f, curY));
             }
 
             //up-right
             if(!(curY - .125f < .0625f || curX + .125f > .9375f)){
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY - .125f);
+                poss_moves.add(new Pair<>(curX + .125f, curY - .125f));
             }
             //up-left
             if(!(curY - .125f < .0625f || curX - .125f < .0625f)){
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY - .125f);
+                poss_moves.add(new Pair<>(curX - .125f, curY - .125f));
             }
             //down-right
             if(!(curY + .125f > .9375f || curX + .125f > .9375f)){
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX + .125f, curY + .125f));
             }
             //down-left
             if(!(curY + .125f > .9375f || curX - .125f < .0625f)){
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY + .125f);
+                poss_moves.add(new Pair<>(curX - .125f, curY + .125f));
             }
 
         }
