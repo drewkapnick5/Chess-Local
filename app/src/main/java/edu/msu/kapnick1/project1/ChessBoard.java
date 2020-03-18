@@ -368,11 +368,11 @@ public class ChessBoard {
             float curX = dragging.getX();
             float curY = dragging.getY();
             //move up
-            if(curY - .125f < .0625f){
-            }else {
+            if(!(curY - .125f < .0625f)){
                 poss_moves.add(curX);
                 poss_moves.add(curY - .125f);
             }
+            //determine move from initial position
             if (dragging.getY() == .8125f){
                 poss_moves.add(curX);
                 poss_moves.add(curY - .25f);
@@ -383,11 +383,11 @@ public class ChessBoard {
             float curX = dragging.getX();
             float curY = dragging.getY();
             //move down
-            if(curY + .125f > .9375f){
-            }else {
+            if(!(curY + .125f > .9375f)){
                 poss_moves.add(curX);
                 poss_moves.add(curY + .125f);
             }
+            //determine move from initial position
             if (dragging.getY() == .1875f){
                 poss_moves.add(dragging.getX());
                 poss_moves.add(dragging.getY() + .25f);
@@ -397,474 +397,222 @@ public class ChessBoard {
         /**
          * Rook moves
          */
-        // Calculates white rook movement
-        if (dragging.getId()  > 7 && dragging.getId() < 10){
+        // Calculates rook movement
+        if (dragging.getId()  > 7 && dragging.getId() < 10 || dragging.getId()  > 23 && dragging.getId() < 26){
             float curX = dragging.getX();
             float curY = dragging.getY();
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //move up
-                if(curY - filler < .0625f){
-                }else {
+                if(!(curY - filler < .0625f)){
                     poss_moves.add(curX);
                     poss_moves.add(curY - filler);
                 }
                 //move down
-                if(curY + filler > .9375f){
-                }else {
+                if(!(curY + filler > .9375f)){
                     poss_moves.add(curX);
                     poss_moves.add(curY + filler);
                 }
                 //move right
-                if(curX + filler > .9375f){
-                }else {
+                if(!(curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY);
                 }
                 //move left
-                if(curX - filler < .0625f){
-                }else {
+                if(!(curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY);
                 }
             }
 
         }
-        // Calculates black rook movement
-        if (dragging.getId()  > 23 && dragging.getId() < 26){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //move up
-                if(curY - filler < .0625f){
-                }else {
-                    poss_moves.add(curX);
-                    poss_moves.add(curY - filler);
-                }
-                //move down
-                if(curY + filler > .9375f){
-                }else {
-                    poss_moves.add(curX);
-                    poss_moves.add(curY + filler);
-                }
-                //move right
-                if(curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY);
-                }
-                //move left
-                if(curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY);
-                }
-            }
-        }
+
 
         /**
          * Bishop moves
          */
-        // Calculates white bishop movement
-        if (dragging.getId()  > 11 && dragging.getId() < 14){
+        // Calculates bishop movement
+        if (dragging.getId()  > 11 && dragging.getId() < 14 || dragging.getId()  > 27 && dragging.getId() < 30){
             float curX = dragging.getX();
             float curY = dragging.getY();
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //up-right
-                if(curY - filler < .0625f || curX + filler > .9375f){
-                }else {
+                if(!(curY - filler < .0625f || curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY - filler);
                 }
                 //up-left
-                if(curY - filler < .0625f || curX - filler < .0625f){
-                }else {
+                if(!(curY - filler < .0625f || curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY - filler);
                 }
                 //down-right
-                if(curY + filler > .9375f || curX + filler > .9375f){
-                }else {
+                if(!(curY + filler > .9375f || curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY + filler);
                 }
                 //down-left
-                if(curY + filler > .9375f || curX - filler < .0625f){
-                }else {
+                if(!(curY + filler > .9375f || curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY + filler);
                 }
             }
         }
-        // Calculates black bishop movement
-        if (dragging.getId()  > 27 && dragging.getId() < 30){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //up-right
-                if(curY - filler < .0625f || curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY - filler);
-                }
-                //up-left
-                if(curY - filler < .0625f || curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY - filler);
-                }
-                //down-right
-                if(curY + filler > .9375f || curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY + filler);
-                }
-                //down-left
-                if(curY + filler > .9375f || curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY + filler);
-                }
-            }
-        }
+
 
         /**
          * Knight moves
          */
-        // Calculates white knight movement
-        if (dragging.getId()  > 9 && dragging.getId() < 12){
+        // Calculates knight movement
+        if (dragging.getId()  > 9 && dragging.getId() < 12 || dragging.getId()  > 25 && dragging.getId() < 28){
             float curX = dragging.getX();
             float curY = dragging.getY();
             //up2-right
-            if(curY - 2*.125f < .0625f || curX + .125f > .9375f){
-            }else {
+            if(!(curY - 2*.125f < .0625f || curX + .125f > .9375f)){
                 poss_moves.add(curX + .125f);
                 poss_moves.add(curY - 2*.125f);
             }
             //up-right2
-            if(curY - .125f < .0625f || curX + 2*.125f > .9375f){
-            }else {
+            if(!(curY - .125f < .0625f || curX + 2*.125f > .9375f)){
                 poss_moves.add(curX + 2*.125f);
                 poss_moves.add(curY - .125f);
             }
             //up2-left
-            if(curY - 2*.125f < .0625f || curX - .125f < .0625f){
-            }else {
+            if(!(curY - 2*.125f < .0625f || curX - .125f < .0625f)){
                 poss_moves.add(curX - .125f);
                 poss_moves.add(curY - 2*.125f);
             }
             //up-left2
-            if(curY - .125f < .0625f || curX - 2*.125f < .0625f){
-            }else {
+            if(!(curY - .125f < .0625f || curX - 2*.125f < .0625f)){
                 poss_moves.add(curX - 2*.125f);
                 poss_moves.add(curY - .125f);
             }
             //down2-right
-            if(curY + 2*.125f > .9375f || curX + .125f > .9375f){
-            }else {
+            if(!(curY + 2*.125f > .9375f || curX + .125f > .9375f)){
                 poss_moves.add(curX + .125f);
                 poss_moves.add(curY + 2*.125f);
             }
             //down-right2
-            if(curY + .125f > .9375f || curX + 2*.125f > .9375f){
-            }else {
+            if(!(curY + .125f > .9375f || curX + 2*.125f > .9375f)){
                 poss_moves.add(curX + 2*.125f);
                 poss_moves.add(curY + .125f);
             }
             //down2-left
-            if(curY + 2*.125f > .9375f || curX - .125f < .0625f){
-            }else {
+            if(!(curY + 2*.125f > .9375f || curX - .125f < .0625f)){
                 poss_moves.add(curX - .125f);
                 poss_moves.add(curY + 2*.125f);
             }
             //down-left2
-            if(curY + .125f > .9375f || curX - 2*.125f < .0625f){
-            }else {
+            if(!(curY + .125f > .9375f || curX - 2*.125f < .0625f)){
                 poss_moves.add(curX - 2*.125f);
                 poss_moves.add(curY + .125f);
             }
         }
-        // Calculates black knight movement
-        if (dragging.getId()  > 25 && dragging.getId() < 28){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
-            //up2-right
-            if(curY - 2*.125f < .0625f || curX + .125f > .9375f){
-            }else {
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY - 2*.125f);
-            }
-            //up-right2
-            if(curY - .125f < .0625f || curX + 2*.125f > .9375f){
-            }else {
-                poss_moves.add(curX + 2*.125f);
-                poss_moves.add(curY - .125f);
-            }
-            //up2-left
-            if(curY - 2*.125f < .0625f || curX - .125f < .0625f){
-            }else {
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY - 2*.125f);
-            }
-            //up-left2
-            if(curY - .125f < .0625f || curX - 2*.125f < .0625f){
-            }else {
-                poss_moves.add(curX - 2*.125f);
-                poss_moves.add(curY - .125f);
-            }
-            //down2-right
-            if(curY + 2*.125f > .9375f || curX + .125f > .9375f){
-            }else {
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY + 2*.125f);
-            }
-            //down-right2
-            if(curY + .125f > .9375f || curX + 2*.125f > .9375f){
-            }else {
-                poss_moves.add(curX + 2*.125f);
-                poss_moves.add(curY + .125f);
-            }
-            //down2-left
-            if(curY + 2*.125f > .9375f || curX - .125f < .0625f){
-            }else {
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY + 2*.125f);
-            }
-            //down-left2
-            if(curY + .125f > .9375f || curX - 2*.125f < .0625f){
-            }else {
-                poss_moves.add(curX - 2*.125f);
-                poss_moves.add(curY + .125f);
-            }
-        }
+
 
         /**
          * Queen moves
          */
-        // Calculates white queen movement
-        if (dragging.getId()  == 14){
+        // Calculates queen movement
+        if (dragging.getId()  == 14 || dragging.getId()  == 30){
             float curX = dragging.getX();
             float curY = dragging.getY();
             for(float filler = .125f; filler < 1f; filler += .125f){
                 //move up
-                if(curY - filler < .0625f){
-                }else {
+                if(!(curY - filler < .0625f)){
                     poss_moves.add(curX);
                     poss_moves.add(curY - filler);
                 }
                 //move down
-                if(curY + filler > .9375f){
-                }else {
+                if(!(curY + filler > .9375f)){
                     poss_moves.add(curX);
                     poss_moves.add(curY + filler);
                 }
                 //move right
-                if(curX + filler > .9375f){
-                }else {
+                if(!(curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY);
                 }
                 //move left
-                if(curX - filler < .0625f){
-                }else {
+                if(!(curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY);
                 }
 
                 //up-right
-                if(curY - filler < .0625f || curX + filler > .9375f){
-                }else {
+                if(!(curY - filler < .0625f || curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY - filler);
                 }
                 //up-left
-                if(curY - filler < .0625f || curX - filler < .0625f){
-                }else {
+                if(!(curY - filler < .0625f || curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY - filler);
                 }
                 //down-right
-                if(curY + filler > .9375f || curX + filler > .9375f){
-                }else {
+                if(!(curY + filler > .9375f || curX + filler > .9375f)){
                     poss_moves.add(curX + filler);
                     poss_moves.add(curY + filler);
                 }
                 //down-left
-                if(curY + filler > .9375f || curX - filler < .0625f){
-                }else {
+                if(!(curY + filler > .9375f || curX - filler < .0625f)){
                     poss_moves.add(curX - filler);
                     poss_moves.add(curY + filler);
                 }
             }
         }
-        // Calculates black queen movement
-        if (dragging.getId()  == 30){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //move up
-                if(curY - filler < .0625f){
-                }else {
-                    poss_moves.add(curX);
-                    poss_moves.add(curY - filler);
-                }
-                //move down
-                if(curY + filler > .9375f){
-                }else {
-                    poss_moves.add(curX);
-                    poss_moves.add(curY + filler);
-                }
-                //move right
-                if(curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY);
-                }
-                //move left
-                if(curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY);
-                }
 
-                //up-right
-                if(curY - filler < .0625f || curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY - filler);
-                }
-                //up-left
-                if(curY - filler < .0625f || curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY - filler);
-                }
-                //down-right
-                if(curY + filler > .9375f || curX + filler > .9375f){
-                }else {
-                    poss_moves.add(curX + filler);
-                    poss_moves.add(curY + filler);
-                }
-                //down-left
-                if(curY + filler > .9375f || curX - filler < .0625f){
-                }else {
-                    poss_moves.add(curX - filler);
-                    poss_moves.add(curY + filler);
-                }
-            }
-        }
 
         /**
          * King moves
          */
-        // Calculates white king movement
+        // Calculates king movement
         if (dragging.getId()  == 15){
             float curX = dragging.getX();
             float curY = dragging.getY();
             //move up
-            if(curY - .125f < .0625f){
-            }else {
+            if(!(curY - .125f < .0625f)){
                 poss_moves.add(curX);
                 poss_moves.add(curY - .125f);
             }
             //move down
-            if(curY + .125f > .9375f){
-            }else {
+            if(!(curY + .125f > .9375f)){
                 poss_moves.add(curX);
                 poss_moves.add(curY + .125f);
             }
             //move right
-            if(curX + .125f > .9375f){
-            }else {
+            if(!(curX + .125f > .9375f)){
                 poss_moves.add(curX + .125f);
                 poss_moves.add(curY);
             }
             //move left
-            if(curX - .125f < .0625f){
-            }else {
+            if(!(curX - .125f < .0625f)){
                 poss_moves.add(curX - .125f);
                 poss_moves.add(curY);
             }
 
             //up-right
-            if(curY - .125f < .0625f || curX + .125f > .9375f){
-            }else {
+            if(!(curY - .125f < .0625f || curX + .125f > .9375f)){
                 poss_moves.add(curX + .125f);
                 poss_moves.add(curY - .125f);
             }
             //up-left
-            if(curY - .125f < .0625f || curX - .125f < .0625f){
-            }else {
+            if(!(curY - .125f < .0625f || curX - .125f < .0625f)){
                 poss_moves.add(curX - .125f);
                 poss_moves.add(curY - .125f);
             }
             //down-right
-            if(curY + .125f > .9375f || curX + .125f > .9375f){
-            }else {
+            if(!(curY + .125f > .9375f || curX + .125f > .9375f)){
                 poss_moves.add(curX + .125f);
                 poss_moves.add(curY + .125f);
             }
             //down-left
-            if(curY + .125f > .9375f || curX - .125f < .0625f){
-            }else {
+            if(!(curY + .125f > .9375f || curX - .125f < .0625f)){
                 poss_moves.add(curX - .125f);
                 poss_moves.add(curY + .125f);
             }
 
         }
-        // Calculates black king movement
-        if (dragging.getId() == 31){
-            float curX = dragging.getX();
-            float curY = dragging.getY();
-            //move up
-            if(curY - .125f < .0625f){
-            }else {
-                poss_moves.add(curX);
-                poss_moves.add(curY - .125f);
-            }
-            //move down
-            if(curY + .125f > .9375f){
-            }else {
-                poss_moves.add(curX);
-                poss_moves.add(curY + .125f);
-            }
-            //move right
-            if(curX + .125f > .9375f){
-            }else {
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY);
-            }
-            //move left
-            if(curX - .125f < .0625f){
-            }else {
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY);
-            }
 
-            //up-right
-            if(curY - .125f < .0625f || curX + .125f > .9375f){
-            }else {
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY - .125f);
-            }
-            //up-left
-            if(curY - .125f < .0625f || curX - .125f < .0625f){
-            }else {
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY - .125f);
-            }
-            //down-right
-            if(curY + .125f > .9375f || curX + .125f > .9375f){
-            }else {
-                poss_moves.add(curX + .125f);
-                poss_moves.add(curY + .125f);
-            }
-            //down-left
-            if(curY + .125f > .9375f || curX - .125f < .0625f){
-            }else {
-                poss_moves.add(curX - .125f);
-                poss_moves.add(curY + .125f);
-            }
-        }
         return poss_moves;
     }
 
