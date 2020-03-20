@@ -151,8 +151,6 @@ public class ChessBoard {
      */
     private ArrayList<String> players = new ArrayList<>();
 
-    private boolean moved = false;
-
 
     public ChessBoard(Context context, ChessView v) {
         // Load the empty chess board image
@@ -275,7 +273,8 @@ public class ChessBoard {
      */
     public void nextTurn() {
         turn = (turn==1) ? 0 : 1;
-        moved = false;
+        if (dragging!=null) { dragging.setDrags(); }
+        dragging = null;
     }
 
     /**
@@ -369,8 +368,11 @@ public class ChessBoard {
         // We do this in reverse order so we find the pieces in front
         for(int p=pieces.length-1; p>=0;  p--) {
             int color = (pieces[p].isBlack()) ? 1 : 0;
-            if (color == turn && pieces[p].isActive() && !moved) {
+            if (color == turn && pieces[p].isActive()) {
                 if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
+                    if (dragging != null) {
+                        dragging.reset();
+                    }
                     // We hit a piece!
                     dragging = pieces[p];
                     //two seperate lists for the positions of each piece on the board
@@ -412,11 +414,8 @@ public class ChessBoard {
             if(dragging.maybeSnap(poss_moves)) {
                 // We have snapped into a valid move
                 view.invalidate();
-                moved = true;
-
             }
             view.invalidate();
-            dragging = null;
             poss_moves.clear();
             white_positions.clear();
             black_positions.clear();

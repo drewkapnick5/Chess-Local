@@ -100,6 +100,16 @@ public class Piece {
         params.y += dy;
     }
 
+    public void reset() {
+        params.x = beforeDragX;
+        params.y = beforeDragY;
+    }
+
+    public void setDrags() {
+        beforeDragX = params.x;
+        beforeDragY = params.y;
+    }
+
     /**
      * Gets x value
      * @return x
@@ -213,8 +223,8 @@ public class Piece {
 
                 params.x = finalX;
                 params.y = finalY;
-                beforeDragX = params.x;
-                beforeDragY = params.y;
+//                beforeDragX = params.x;
+//                beforeDragY = params.y;
                 //finalX += .125f;
                 finalY -= .125f;
                 return true;
