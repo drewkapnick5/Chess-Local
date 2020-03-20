@@ -151,6 +151,8 @@ public class ChessBoard {
      */
     private ArrayList<String> players = new ArrayList<>();
 
+    private boolean moved = false;
+
 
     public ChessBoard(Context context, ChessView v) {
         // Load the empty chess board image
@@ -273,6 +275,7 @@ public class ChessBoard {
      */
     public void nextTurn() {
         turn = (turn==1) ? 0 : 1;
+        moved = false;
     }
 
     /**
@@ -366,7 +369,7 @@ public class ChessBoard {
         // We do this in reverse order so we find the pieces in front
         for(int p=pieces.length-1; p>=0;  p--) {
             int color = (pieces[p].isBlack()) ? 1 : 0;
-            if (color == turn && pieces[p].isActive()) {
+            if (color == turn && pieces[p].isActive() && !moved) {
                 if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
                     // We hit a piece!
                     dragging = pieces[p];
@@ -407,6 +410,7 @@ public class ChessBoard {
             if(dragging.maybeSnap(poss_moves)) {
                 // We have snapped into a valid move
                 view.invalidate();
+                moved = true;
 
             }
             view.invalidate();
@@ -457,7 +461,8 @@ public class ChessBoard {
         if (dragging.getId() > 15 && dragging.getId() < 24){
             //move down
             if(!(curY + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
+                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
+                    black_positions.contains(new Pair<>(curX, curY +.125f))){
                     d_block = true;
                 }
                 if(!d_block){
@@ -466,7 +471,8 @@ public class ChessBoard {
             }
             //determine move from initial position
             if (dragging.getY() == .1875f){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
+                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
+                        black_positions.contains(new Pair<>(curX, curY +.125f))){
                     d_block = true;
                 }
                 if(!d_block){

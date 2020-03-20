@@ -57,8 +57,6 @@ public class ChessView extends View {
         playerPaint.setColor(Color.BLACK);
     }
 
-    private int turn;
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
