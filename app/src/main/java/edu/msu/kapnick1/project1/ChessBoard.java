@@ -746,7 +746,7 @@ public class ChessBoard {
 
 
         // Calculates king movement
-        if (dragging.getId()  == 15){
+        if (dragging.getId()  == 15 || dragging.getId() == 31){
             //move up
             if(!(curY - .125f < .0625f)){
                 if(white_positions.contains(new Pair<>(curX, curY + .125f))){
