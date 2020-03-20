@@ -80,6 +80,11 @@ public class ChessBoard {
     private Paint outlinePaint;
 
     /**
+     * Paint for writing the players names
+     */
+    private Paint playerPaint;
+
+    /**
      * Completed board bitmap
      */
     private Bitmap emptyBoard;
@@ -130,7 +135,7 @@ public class ChessBoard {
      */
     private float lastRelY;
 
-    private View view;
+    private ChessView view;
 
     private List<Pair> poss_moves = new ArrayList<>();
     private List<Pair> white_positions = new ArrayList<>();
@@ -139,7 +144,7 @@ public class ChessBoard {
 
 
 
-    public ChessBoard(Context context, View v) {
+    public ChessBoard(Context context, ChessView v) {
         // Load the empty chess board image
         emptyBoard = BitmapFactory.decodeResource(context.getResources(), R.drawable.chess_board);
 
@@ -148,6 +153,9 @@ public class ChessBoard {
         outlinePaint.setStyle(Paint.Style.STROKE);
         outlinePaint.setColor(Color.BLACK);
         outlinePaint.setStrokeWidth(5);
+
+        playerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        playerPaint.setColor(Color.BLACK);
 
 
         for (int i = 0; i < 8; i++) {
@@ -784,20 +792,12 @@ public class ChessBoard {
      * @param bundle bundle to save to
      */
     public void putToBundle(String key, Bundle bundle) {
-//        bundle.putSerializable(key, params);
-//    }
-
-//    public void saveInstanceState(Bundle bundle) {
 
         Serializable [] params = new Serializable[PIECE_COUNT];
 
         for (int i = 0; i < PIECE_COUNT; i++) {
             pieces[i].putToBundle(Integer.toString(i), bundle);
-//            bundle.putSerializable(Integer.toString(i), pieces[i].getParams());
         }
-
-//        bundle.putSerializable(key, params);
-
     }
 
     /**
@@ -806,20 +806,11 @@ public class ChessBoard {
      * @param bundle bundle to load from
      */
     public void getFromBundle(String key, Bundle bundle) {
-//        params = (Parameters)bundle.getSerializable(key);
-//
-//        // Ensure the options are all set
-//        setColor(params.color);
-//        setImagePath(params.piece);
-//    }
-
-//    public void loadInstanceState(Bundle bundle) {
 
 
         for (int i = 0; i < PIECE_COUNT; i++) {
             pieces[i].getFromBundle(Integer.toString(i), bundle);
         }
-//        Serializable params = bundle.getSerializable(key);
 
     }
 

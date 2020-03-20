@@ -23,11 +23,9 @@ public class MainActivity extends AppCompatActivity {
         String name1 = edit.getText().toString();
         String name2 = edit2.getText().toString();
 
-        Player player1 = new Player((name1 == "") ? "Player1" : name1);
-        Player player2 = new Player((name2 == "") ? "Player2" : name2);
-
-
         Intent intent = new Intent(this, ChessActivity.class);
+        intent.putExtra("Player1", name1);
+        intent.putExtra("Player2", name2);
         startActivity(intent);
     }
 

@@ -2,6 +2,8 @@ package edu.msu.kapnick1.project1;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -26,10 +28,11 @@ public class ChessView extends View {
      */
     private ChessBoard chessBoard;
 
+    private Paint playerPaint;
     /**
      * Players in the game
      */
-    private ArrayList<Player> players;
+    private ArrayList<String> players = new ArrayList<>();
 
     public ChessView(Context context) {
         super(context);
@@ -48,14 +51,16 @@ public class ChessView extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         chessBoard = new ChessBoard(getContext(), this);
-
-
+        playerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        playerPaint.setColor(Color.BLACK);
     }
 
+    private int turn;
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.drawText(players.get(turn), canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
         chessBoard.draw(canvas);
     }
 
@@ -83,5 +88,27 @@ public class ChessView extends View {
         chessBoard.getFromBundle("board", bundle);
     }
 
+    /**
+     *
+     * @param player
+     */
+    public void addPlayer(String player) {
+        players.add(player);
+    }
+
+    /**
+     *
+     * @return
+     */
+    public String getPlayer() {
+        return players.get(turn);
+    }
+
+    /**
+     *
+     */
+    public void nextTurn() {
+        turn = (turn==1) ? 0 : 1;
+    }
 
 }
