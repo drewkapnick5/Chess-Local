@@ -100,11 +100,17 @@ public class Piece {
         params.y += dy;
     }
 
+    /**
+     * Reset to position at before drag started
+     */
     public void reset() {
         params.x = beforeDragX;
         params.y = beforeDragY;
     }
 
+    /**
+     * After turn over, drags set to position piece was moved to
+     */
     public void setDrags() {
         beforeDragX = params.x;
         beforeDragY = params.y;
