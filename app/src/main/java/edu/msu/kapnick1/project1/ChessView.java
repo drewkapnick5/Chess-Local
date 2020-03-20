@@ -107,5 +107,9 @@ public class ChessView extends View {
         invalidate();
     }
 
+    public void setWinner() {
+        winner = chessBoard.getPlayer();
+    }
+
 
 }

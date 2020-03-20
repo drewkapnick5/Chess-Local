@@ -141,8 +141,14 @@ public class ChessBoard {
     private List<Pair> white_positions = new ArrayList<>();
     private List<Pair> black_positions = new ArrayList<>();
 
+    /**
+     * Current turn
+     */
     private int turn = 0;
 
+    /**
+     * The player names in the game
+     */
     private ArrayList<String> players = new ArrayList<>();
 
 
@@ -262,14 +268,25 @@ public class ChessBoard {
         }
     }
 
+    /**
+     * Go to the next player's turn
+     */
     public void nextTurn() {
         turn = (turn==1) ? 0 : 1;
     }
 
+    /**
+     * Adds a player to the game
+     * @param player Name of the player
+     */
     public void addPlayer(String player) {
         players.add(player);
     }
 
+    /**
+     * Get the players who turn it currently is
+     * @return String player name
+     */
     public String getPlayer() {
         return players.get(turn);
     }
@@ -414,8 +431,6 @@ public class ChessBoard {
         boolean ul_block = false;
         boolean dr_block = false;
         boolean dl_block = false;
-
-//        int turn = view.getTurn();
 
         // Calculates white pawn movement
         if (dragging.getId() < 8){
@@ -803,8 +818,6 @@ public class ChessBoard {
 
         return poss_moves;
     }
-
-//    public void saveInstanceState(Bundle bundle) {
 
     /**
      * Save the view state to a bundle

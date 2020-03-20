@@ -18,7 +18,6 @@ public class ChessActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chess);
 
-//        players.add(player1);
         Intent intent = getIntent();
         String name1 = intent.getExtras().getString("Player1");
         String name2 = intent.getExtras().getString("Player2");
@@ -29,10 +28,6 @@ public class ChessActivity extends AppCompatActivity {
         getChessView().addPlayer(name1);
         getChessView().addPlayer(name2);
 
-//        Player player1 = new Player((name1 == "") ? "Player1" : name1);
-//        Player player2 = new Player((name2 == "") ? "Player2" : name2);
-//
-//        getChessView().addPlayer(player1);
 
         if (savedInstanceState != null) {
              getChessView().loadInstanceState(savedInstanceState);
@@ -64,8 +59,11 @@ public class ChessActivity extends AppCompatActivity {
      */
     public void nextTurn(View view) {
         getChessView().nextTurn();
-        view.invalidate();
     }
 
-    private ArrayList<Player> players;
+    public void resign(View view) {
+        getChessView().nextTurn();
+        getChessView().setWinner();
+    }
+
 }
