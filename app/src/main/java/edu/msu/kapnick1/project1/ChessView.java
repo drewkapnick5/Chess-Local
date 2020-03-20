@@ -29,6 +29,8 @@ public class ChessView extends View {
     private ChessBoard chessBoard;
 
     private Paint playerPaint;
+
+    private String winner = null;
     /**
      * Players in the game
      */
@@ -60,7 +62,7 @@ public class ChessView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawText(players.get(turn), canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
+        canvas.drawText(chessBoard.getPlayer(), canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
         chessBoard.draw(canvas);
     }
 
@@ -93,22 +95,17 @@ public class ChessView extends View {
      * @param player
      */
     public void addPlayer(String player) {
-        players.add(player);
-    }
-
-    /**
-     *
-     * @return
-     */
-    public String getPlayer() {
-        return players.get(turn);
+//        players.add(player);
+        chessBoard.addPlayer(player);
     }
 
     /**
      *
      */
     public void nextTurn() {
-        turn = (turn==1) ? 0 : 1;
+        chessBoard.nextTurn();
+        invalidate();
     }
+
 
 }

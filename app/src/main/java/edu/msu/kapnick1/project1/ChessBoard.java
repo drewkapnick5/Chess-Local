@@ -141,7 +141,9 @@ public class ChessBoard {
     private List<Pair> white_positions = new ArrayList<>();
     private List<Pair> black_positions = new ArrayList<>();
 
+    private int turn = 0;
 
+    private ArrayList<String> players = new ArrayList<>();
 
 
     public ChessBoard(Context context, ChessView v) {
@@ -260,6 +262,18 @@ public class ChessBoard {
         }
     }
 
+    public void nextTurn() {
+        turn = (turn==1) ? 0 : 1;
+    }
+
+    public void addPlayer(String player) {
+        players.add(player);
+    }
+
+    public String getPlayer() {
+        return players.get(turn);
+    }
+
     public void draw(Canvas canvas) {
         int wid = canvas.getWidth();
         int hit = canvas.getHeight();
@@ -334,27 +348,31 @@ public class ChessBoard {
         // Check each piece to see if it has been hit
         // We do this in reverse order so we find the pieces in front
         for(int p=pieces.length-1; p>=0;  p--) {
-            if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
-                // We hit a piece!
-                dragging = pieces[p];
-                //two seperate lists for the positions of each piece on the board
-                //right now black can jump black pieces
-                //white cannot jump other white pieces but can land on black pieces
-                //left this currently so it could potentially help with game logic, so that a piece
-                // is allowed to land on another and "capture" it
-                for(Piece piece : pieces) {
-                    if(piece.getId()<16){
-                        white_positions.add(new Pair<>(piece.getX(), piece.getY()));
-                    }else{
-                        black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+            int color = (pieces[p].isBlack()) ? 1 : 0;
+            if (color == turn && pieces[p].isActive()) {
+                if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
+                    // We hit a piece!
+                    dragging = pieces[p];
+                    //two seperate lists for the positions of each piece on the board
+                    //right now black can jump black pieces
+                    //white cannot jump other white pieces but can land on black pieces
+                    //left this currently so it could potentially help with game logic, so that a piece
+                    // is allowed to land on another and "capture" it
+                    for(Piece piece : pieces) {
+                        if(piece.getId()<16){
+                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                        }else{
+                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                        }
                     }
-                }
-                poss_moves = calc_moves(dragging, white_positions, black_positions);
-                lastRelX = x;
-                lastRelY = y;
+                    poss_moves = calc_moves(dragging, white_positions, black_positions);
+                    lastRelX = x;
+                    lastRelY = y;
 
-                return true;
+                    return true;
+                }
             }
+
         }
 
         return false;
@@ -396,6 +414,8 @@ public class ChessBoard {
         boolean ul_block = false;
         boolean dr_block = false;
         boolean dl_block = false;
+
+//        int turn = view.getTurn();
 
         // Calculates white pawn movement
         if (dragging.getId() < 8){
