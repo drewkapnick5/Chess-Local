@@ -379,11 +379,13 @@ public class ChessBoard {
                     //left this currently so it could potentially help with game logic, so that a piece
                     // is allowed to land on another and "capture" it
                     for(Piece piece : pieces) {
-                        if(piece.getId()<16){
-                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
-                        }else{
-                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
-                        }
+                        white_positions.add(new Pair<>(piece.getX(), piece.getY()));
+//                        if(piece.getId()<16){
+//                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
+//
+//                        }else{
+//                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+//                        }
                     }
                     poss_moves = calc_moves(dragging, white_positions, black_positions);
                     lastRelX = x;
