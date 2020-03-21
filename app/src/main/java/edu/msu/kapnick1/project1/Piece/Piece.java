@@ -199,6 +199,14 @@ public class Piece {
         return params.active;
     }
 
+    /**
+     * Set the active flag
+     * @param active whether or not the piece has been captured
+     */
+    public void setActive(boolean active) {
+        params.active = active;
+    }
+
     public void remove() {
         params.active = false;
     }
@@ -294,6 +302,7 @@ public class Piece {
         setImagePath(params.piece);
         setX(params.x);
         setY(params.y);
+        setActive(params.active);
     }
 
     protected static class Parameters implements Serializable {
