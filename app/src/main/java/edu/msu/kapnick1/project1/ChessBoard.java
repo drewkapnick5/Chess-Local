@@ -378,7 +378,9 @@ public class ChessBoard {
                 if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
                     if (dragging != null) {
                         dragging.reset();
-                    } if (remove) {
+                    } // If a piece was removed but turn was not ended and another piece moved,
+                      // bring that piece back
+                    if (remove) {
                         pieces[r_index].reset();
                         remove = false;
                     }
@@ -392,13 +394,20 @@ public class ChessBoard {
                     for(Piece piece : pieces) {
                         positions.add(new Pair<>(piece.getX(), piece.getY()));
                         if(piece.getId()<16){
-                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
-
+                            if (piece.isActive()) {
+                                white_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                            } else {
+                                white_positions.add(null);
+                            }
                         }else{
-                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                            if (piece.isActive()) {
+                                black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                            } else {
+                                black_positions.add(null);
+                            }
                         }
                     }
-                    poss_moves = calc_moves(dragging, white_positions, black_positions);
+                    poss_moves = calc_moves();
                     lastRelX = x;
                     lastRelY = y;
 
@@ -424,6 +433,7 @@ public class ChessBoard {
                 // We have snapped into a valid move
                 view.invalidate();
             }
+            // Check if piece placed on top of another piece of opposite color
             r_index = -1;
             if (dragging.getId() < 16) {
                 r_index = black_positions.indexOf(new Pair<>(dragging.getX(), dragging.getY()));
@@ -432,6 +442,7 @@ public class ChessBoard {
                 r_index = white_positions.indexOf(new Pair<>(dragging.getX(), dragging.getY()));
             }
 
+            // remove a piece if its active and a piece of the other color placed on top of it
             if (r_index > -1 && pieces[r_index].isActive()) {
                 remove = true;
                 pieces[r_index].remove();
@@ -448,7 +459,7 @@ public class ChessBoard {
         return false;
     }
 
-    private List<Pair> calc_moves(Piece dragging, List<Pair> white_positions, List<Pair> black_positions){
+    private List<Pair> calc_moves(){
 
         if (dragging.getId() < 16) {
             poss_moves = dragging.checkMoves(white_positions);
