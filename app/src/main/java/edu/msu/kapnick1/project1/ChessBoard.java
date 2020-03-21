@@ -871,6 +871,8 @@ public class ChessBoard {
         for (int i = 0; i < PIECE_COUNT; i++) {
             pieces[i].putToBundle(Integer.toString(i), bundle);
         }
+
+        bundle.putInt("turn", turn);
     }
 
     /**
@@ -884,7 +886,7 @@ public class ChessBoard {
         for (int i = 0; i < PIECE_COUNT; i++) {
             pieces[i].getFromBundle(Integer.toString(i), bundle);
         }
-
+        turn = bundle.getInt("turn");
     }
 
 }
