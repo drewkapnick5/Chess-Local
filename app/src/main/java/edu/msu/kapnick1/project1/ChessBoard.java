@@ -375,7 +375,7 @@ public class ChessBoard {
         for(int p=pieces.length-1; p>=0;  p--) {
             int color = (pieces[p].isBlack()) ? 1 : 0;
             if (color == turn && pieces[p].isActive()) {
-                if(pieces[p].hit(x, y, boardSize, scaleFactor/2) && pieces[p].isActive()) {
+                if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
                     if (dragging != null) {
                         dragging.reset();
                     } if (remove) {
@@ -432,7 +432,7 @@ public class ChessBoard {
                 r_index = white_positions.indexOf(new Pair<>(dragging.getX(), dragging.getY()));
             }
 
-            if (r_index > -1) {
+            if (r_index > -1 && pieces[r_index].isActive()) {
                 remove = true;
                 pieces[r_index].remove();
 
