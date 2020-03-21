@@ -45,22 +45,24 @@ public class Piece {
      */
     public void draw(Canvas canvas, int marginX, int marginY,
                      int boardSize, float scaleFactor) {
-        canvas.save();
+        if (params.active) {
+            canvas.save();
 
-        // Convert x,y to pixels and add the margin, then draw
-        //x = finalX;
-        //y = finalY;
-        canvas.translate(marginX + params.x * boardSize, marginY + params.y * boardSize);
+            // Convert x,y to pixels and add the margin, then draw
+            //x = finalX;
+            //y = finalY;
+            canvas.translate(marginX + params.x * boardSize, marginY + params.y * boardSize);
 
-        // Scale it to the right size
-        canvas.scale(scaleFactor/4, scaleFactor/4);
+            // Scale it to the right size
+            canvas.scale(scaleFactor / 4, scaleFactor / 4);
 
-        // This magic code makes the center of the piece at 0, 0
-        canvas.translate(-params.piece.getWidth() / 2f, -params.piece.getHeight() / 2f);
+            // This magic code makes the center of the piece at 0, 0
+            canvas.translate(-params.piece.getWidth() / 2f, -params.piece.getHeight() / 2f);
 
-        // Draw the bitmap
-        canvas.drawBitmap(params.piece, 0, 0, null);
-        canvas.restore();
+            // Draw the bitmap
+            canvas.drawBitmap(params.piece, 0, 0, null);
+            canvas.restore();
+        }
     }
 
     /**
@@ -110,6 +112,7 @@ public class Piece {
     public void reset() {
         params.x = beforeDragX;
         params.y = beforeDragY;
+        params.active = true;
     }
 
     /**
@@ -194,6 +197,10 @@ public class Piece {
      */
     public boolean isActive() {
         return params.active;
+    }
+
+    public void remove() {
+        params.active = false;
     }
 
     public Parameters getParams() { return params; }

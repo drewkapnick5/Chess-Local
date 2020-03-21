@@ -140,6 +140,10 @@ public class ChessBoard {
     private List<Pair> poss_moves = new ArrayList<>();
     private List<Pair> white_positions = new ArrayList<>();
     private List<Pair> black_positions = new ArrayList<>();
+    private List<Pair> positions = new ArrayList<>();
+
+    private boolean remove = false;
+    private int r_index = -1;
 
     /**
      * Current turn
@@ -274,6 +278,8 @@ public class ChessBoard {
     public void nextTurn() {
         turn = (turn==1) ? 0 : 1;
         if (dragging!=null) { dragging.setDrags(); }
+        if (remove) { pieces[r_index].remove(); }
+        remove = false;
         dragging = null;
     }
 
@@ -369,9 +375,12 @@ public class ChessBoard {
         for(int p=pieces.length-1; p>=0;  p--) {
             int color = (pieces[p].isBlack()) ? 1 : 0;
             if (color == turn && pieces[p].isActive()) {
-                if(pieces[p].hit(x, y, boardSize, scaleFactor/2)) {
+                if(pieces[p].hit(x, y, boardSize, scaleFactor/2) && pieces[p].isActive()) {
                     if (dragging != null) {
                         dragging.reset();
+                    } if (remove) {
+                        pieces[r_index].reset();
+                        remove = false;
                     }
                     // We hit a piece!
                     dragging = pieces[p];
@@ -381,13 +390,13 @@ public class ChessBoard {
                     //left this currently so it could potentially help with game logic, so that a piece
                     // is allowed to land on another and "capture" it
                     for(Piece piece : pieces) {
-                        white_positions.add(new Pair<>(piece.getX(), piece.getY()));
-//                        if(piece.getId()<16){
-//                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
-//
-//                        }else{
-//                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
-//                        }
+                        positions.add(new Pair<>(piece.getX(), piece.getY()));
+                        if(piece.getId()<16){
+                            white_positions.add(new Pair<>(piece.getX(), piece.getY()));
+
+                        }else{
+                            black_positions.add(new Pair<>(piece.getX(), piece.getY()));
+                        }
                     }
                     poss_moves = calc_moves(dragging, white_positions, black_positions);
                     lastRelX = x;
@@ -415,6 +424,20 @@ public class ChessBoard {
                 // We have snapped into a valid move
                 view.invalidate();
             }
+            r_index = -1;
+            if (dragging.getId() < 16) {
+                r_index = black_positions.indexOf(new Pair<>(dragging.getX(), dragging.getY()));
+                r_index = (r_index>-1) ? r_index+16 : r_index;
+            } else {
+                r_index = white_positions.indexOf(new Pair<>(dragging.getX(), dragging.getY()));
+            }
+
+            if (r_index > -1) {
+                remove = true;
+                pieces[r_index].remove();
+
+            }
+
             view.invalidate();
             poss_moves.clear();
             white_positions.clear();
@@ -427,7 +450,11 @@ public class ChessBoard {
 
     private List<Pair> calc_moves(Piece dragging, List<Pair> white_positions, List<Pair> black_positions){
 
-        poss_moves = dragging.checkMoves(white_positions);
+        if (dragging.getId() < 16) {
+            poss_moves = dragging.checkMoves(white_positions);
+        } else {
+            poss_moves = dragging.checkMoves(black_positions);
+        }
 
 
 //        // Calculates white pawn movement
