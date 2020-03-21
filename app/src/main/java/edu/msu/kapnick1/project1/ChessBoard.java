@@ -426,402 +426,397 @@ public class ChessBoard {
     }
 
     private List<Pair> calc_moves(Piece dragging, List<Pair> white_positions, List<Pair> black_positions){
-        float curX = dragging.getX();
-        float curY = dragging.getY();
-        boolean u_block = false;
-        boolean d_block = false;
-        boolean r_block = false;
-        boolean l_block = false;
-        boolean ur_block = false;
-        boolean ul_block = false;
-        boolean dr_block = false;
-        boolean dl_block = false;
 
-        // Calculates white pawn movement
-        if (dragging.getId() < 8){
-            //move up
-            if(!(curY - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX, curY - .125f))){
-                    u_block = true;
-                }
-                if(!u_block){
-                    poss_moves.add(new Pair<>(curX, curY - .125f));
-                }
-            }
-            //determine move from initial position
-            if (dragging.getY() == .8125f){
-                if(white_positions.contains(new Pair<>(curX, curY - .125f))){
-                    u_block = true;
-                }
-                if(!u_block){
-                    poss_moves.add(new Pair<>(curX, curY - .25f));
-                }
-            }
-        }
-        // Calculates black pawn movement
-        if (dragging.getId() > 15 && dragging.getId() < 24){
-            //move down
-            if(!(curY + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
-                    black_positions.contains(new Pair<>(curX, curY +.125f))){
-                    d_block = true;
-                }
-                if(!d_block){
-                    poss_moves.add(new Pair<>(curX, curY + .125f));
-                }
-            }
-            //determine move from initial position
-            if (dragging.getY() == .1875f){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
-                        black_positions.contains(new Pair<>(curX, curY +.125f))){
-                    d_block = true;
-                }
-                if(!d_block){
-                    poss_moves.add(new Pair<>(curX, curY + .25f));
-                }
-            }
-        }
+        poss_moves = dragging.checkMoves(white_positions);
 
 
-        // Calculates rook movement
-        if (dragging.getId()  > 7 && dragging.getId() < 10 || dragging.getId()  > 23 && dragging.getId() < 26){
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //move up
-                if(!(curY - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX, curY - filler))){
-                        u_block = true;
-                    }
-                    if(!u_block){
-                        poss_moves.add(new Pair<>(curX, curY - filler));
-                    }
-
-                }
-                //move down
-                if(!(curY + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX, curY + filler))){
-                        d_block = true;
-                    }
-                    if(!d_block){
-                        poss_moves.add(new Pair<>(curX, curY + filler));
-                    }
-
-                }
-                //move right
-                if(!(curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY))){
-                        r_block = true;
-                    }
-                    if(!r_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY));
-                    }
-                }
-                //move left
-                if(!(curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY))){
-                        l_block = true;
-                    }
-                    if(!l_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY));
-                    }
-                }
-            }
-
-        }
-
-
-
-        // Calculates bishop movement
-        if (dragging.getId()  > 11 && dragging.getId() < 14 || dragging.getId()  > 27 && dragging.getId() < 30){
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //up-right
-                if(!(curY - filler < .0625f || curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY - filler))){
-                        ur_block = true;
-                    }
-                    if(!ur_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY - filler));
-                    }
-                }
-                //up-left
-                if(!(curY - filler < .0625f || curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY - filler))){
-                        ul_block = true;
-                    }
-                    if(!ul_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY - filler));
-                    }
-                }
-                //down-right
-                if(!(curY + filler > .9375f || curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY + filler))){
-                        dr_block = true;
-                    }
-                    if(!dr_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY + filler));
-                    }
-                }
-                //down-left
-                if(!(curY + filler > .9375f || curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY + filler))){
-                        dl_block = true;
-                    }
-                    if(!dl_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY + filler));
-                    }
-                }
-            }
-        }
-
-
-
-        // Calculates knight movement
-        if (dragging.getId()  > 9 && dragging.getId() < 12 || dragging.getId()  > 25 && dragging.getId() < 28){
-            //up2-right
-            if(!(curY - 2*.125f < .0625f || curX + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + .125f, curY - 2*.125f))){
-                    u_block = true;
-                }
-                if(!u_block){
-                    poss_moves.add(new Pair<>(curX + .125f, curY - 2*.125f));
-                }
-                u_block = false;
-            }
-            //up-right2
-            if(!(curY - .125f < .0625f || curX + 2*.125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + 2*.125f, curY - .125f))){
-                    r_block = true;
-                }
-                if(!r_block){
-                    poss_moves.add(new Pair<>(curX + 2*.125f, curY - .125f));
-                }
-                r_block = false;
-            }
-            //up2-left
-            if(!(curY - 2*.125f < .0625f || curX - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - .125f, curY - 2*.125f))){
-                    l_block = true;
-                }
-                if(!l_block){
-                    poss_moves.add(new Pair<>(curX - .125f, curY - 2*.125f));
-                }
-                l_block = false;
-            }
-            //up-left2
-            if(!(curY - .125f < .0625f || curX - 2*.125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - 2*.125f, curY - .125f))){
-                    d_block = true;
-                }
-                if(!d_block){
-                    poss_moves.add(new Pair<>(curX - 2*.125f, curY - .125f));
-                }
-                d_block = false;
-            }
-            //down2-right
-            if(!(curY + 2*.125f > .9375f || curX + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + .125f, curY + 2*.125f))){
-                    ur_block = true;
-                }
-                if(!ur_block){
-                    poss_moves.add(new Pair<>(curX + .125f, curY + 2*.125f));
-                }
-                ur_block = false;
-            }
-            //down-right2
-            if(!(curY + .125f > .9375f || curX + 2*.125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + 2*.125f, curY + .125f))){
-                    ul_block = true;
-                }
-                if(!ul_block){
-                    poss_moves.add(new Pair<>(curX + 2*.125f, curY + .125f));
-                }
-                ul_block = false;
-            }
-            //down2-left
-            if(!(curY + 2*.125f > .9375f || curX - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - .125f, curY + 2*.125f))){
-                    dr_block = true;
-                }
-                if(!dr_block){
-                    poss_moves.add(new Pair<>(curX - .125f, curY + 2*.125f));
-                }
-                dr_block = false;
-            }
-            //down-left2
-            if(!(curY + .125f > .9375f || curX - 2*.125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - 2*.125f, curY + .125f))){
-                    dl_block = true;
-                }
-                if(!dl_block){
-                    poss_moves.add(new Pair<>(curX - 2*.125f, curY + .125f));
-                }
-                dl_block = false;
-            }
-        }
-
-
-
-        // Calculates queen movement
-        if (dragging.getId()  == 14 || dragging.getId()  == 30){
-
-            for(float filler = .125f; filler < 1f; filler += .125f){
-                //move up
-                if(!(curY - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX, curY - filler))){
-                        u_block = true;
-                    }
-                    if(!u_block){
-                        poss_moves.add(new Pair<>(curX, curY - filler));
-                    }
-
-                }
-                //move down
-                if(!(curY + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX, curY + filler))){
-                        d_block = true;
-                    }
-                    if(!d_block){
-                        poss_moves.add(new Pair<>(curX, curY + filler));
-                    }
-
-                }
-                //move right
-                if(!(curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY))){
-                        r_block = true;
-                    }
-                    if(!r_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY));
-                    }
-                }
-                //move left
-                if(!(curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY))){
-                        l_block = true;
-                    }
-                    if(!l_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY));
-                    }
-                }
-
-
-                //up-right
-                if(!(curY - filler < .0625f || curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY - filler))){
-                        ur_block = true;
-                    }
-                    if(!ur_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY - filler));
-                    }
-                }
-                //up-left
-                if(!(curY - filler < .0625f || curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY - filler))){
-                        ul_block = true;
-                    }
-                    if(!ul_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY - filler));
-                    }
-                }
-                //down-right
-                if(!(curY + filler > .9375f || curX + filler > .9375f)){
-                    if(white_positions.contains(new Pair<>(curX + filler, curY + filler))){
-                        dr_block = true;
-                    }
-                    if(!dr_block){
-                        poss_moves.add(new Pair<>(curX + filler, curY + filler));
-                    }
-                }
-                //down-left
-                if(!(curY + filler > .9375f || curX - filler < .0625f)){
-                    if(white_positions.contains(new Pair<>(curX - filler, curY + filler))){
-                        dl_block = true;
-                    }
-                    if(!dl_block){
-                        poss_moves.add(new Pair<>(curX - filler, curY + filler));
-                    }
-                }
-            }
-        }
-
-
-
-        // Calculates king movement
-        if (dragging.getId()  == 15 || dragging.getId() == 31){
-            //move up
-            if(!(curY - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
-                    u_block = true;
-                }
-                if(!u_block){
-                    poss_moves.add(new Pair<>(curX, curY - .125f));
-                }
-            }
-            //move down
-            if(!(curY + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
-                    d_block = true;
-                }
-                if(!d_block){
-                    poss_moves.add(new Pair<>(curX, curY + .125f));
-                }
-            }
-            //move right
-            if(!(curX + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + .125f, curY))){
-                    r_block = true;
-                }
-                if(!r_block){
-                    poss_moves.add(new Pair<>(curX + .125f, curY));
-                }
-            }
-            //move left
-            if(!(curX - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - .125f, curY))){
-                    l_block = true;
-                }
-                if(!l_block){
-                    poss_moves.add(new Pair<>(curX - .125f, curY));
-                }
-            }
-
-            //up-right
-            if(!(curY - .125f < .0625f || curX + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + .125f, curY - .125f))){
-                    ur_block = true;
-                }
-                if(!ur_block){
-                    poss_moves.add(new Pair<>(curX + .125f, curY - .125f));
-                }
-            }
-            //up-left
-            if(!(curY - .125f < .0625f || curX - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - .125f, curY - .125f))){
-                    ul_block = true;
-                }
-                if(!ul_block){
-                    poss_moves.add(new Pair<>(curX - .125f, curY - .125f));
-                }
-            }
-            //down-right
-            if(!(curY + .125f > .9375f || curX + .125f > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + .125f, curY + .125f))){
-                    dr_block = true;
-                }
-                if(!dr_block){
-                    poss_moves.add(new Pair<>(curX + .125f, curY + .125f));
-                }
-            }
-            //down-left
-            if(!(curY + .125f > .9375f || curX - .125f < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - .125f, curY + .125f))){
-                    dl_block = true;
-                }
-                if(!dl_block){
-                    poss_moves.add(new Pair<>(curX - .125f, curY + .125f));
-                }
-            }
-
-        }
+//        // Calculates white pawn movement
+//        if (dragging.getId() < 8 || (dragging.getId() > 15 && dragging.getId() < 24)){
+//            //move up
+//            if(!(curY - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX, curY - .125f))){
+//                    u_block = true;
+//                }
+//                if(!u_block){
+//                    poss_moves.add(new Pair<>(curX, curY - .125f));
+//                }
+//            }
+//            //determine move from initial position
+//            if (dragging.getY() == .8125f){
+//                if(white_positions.contains(new Pair<>(curX, curY - .125f))){
+//                    u_block = true;
+//                }
+//                if(!u_block){
+//                    poss_moves.add(new Pair<>(curX, curY - .25f));
+//                }
+//            }
+//            poss_moves = dragging.checkMoves(white_positions);
+//        }
+////         Calculates black pawn movement
+//        if (dragging.getId() > 15 && dragging.getId() < 24){
+////            move down
+//            if(!(curY + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
+//                    black_positions.contains(new Pair<>(curX, curY +.125f))){
+//                    d_block = true;
+//                }
+//                if(!d_block){
+//                    poss_moves.add(new Pair<>(curX, curY + .125f));
+//                }
+//            }
+//            //determine move from initial position
+//            if (dragging.getY() == .1875f){
+//                if(white_positions.contains(new Pair<>(curX, curY + .125f))||
+//                        black_positions.contains(new Pair<>(curX, curY +.125f))){
+//                    d_block = true;
+//                }
+//                if(!d_block){
+//                    poss_moves.add(new Pair<>(curX, curY + .25f));
+//                }
+//            }
+//            poss_moves = dragging.checkMoves(white_positions);
+//        }
+//
+//
+//        // Calculates rook movement
+//        if (dragging.getId()  > 7 && dragging.getId() < 10 || dragging.getId()  > 23 && dragging.getId() < 26){
+//            for(float filler = .125f; filler < 1f; filler += .125f){
+//                //move up
+//                if(!(curY - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX, curY - filler))){
+//                        u_block = true;
+//                    }
+//                    if(!u_block){
+//                        poss_moves.add(new Pair<>(curX, curY - filler));
+//                    }
+//
+//                }
+//                //move down
+//                if(!(curY + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX, curY + filler))){
+//                        d_block = true;
+//                    }
+//                    if(!d_block){
+//                        poss_moves.add(new Pair<>(curX, curY + filler));
+//                    }
+//
+//                }
+//                //move right
+//                if(!(curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY))){
+//                        r_block = true;
+//                    }
+//                    if(!r_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY));
+//                    }
+//                }
+//                //move left
+//                if(!(curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY))){
+//                        l_block = true;
+//                    }
+//                    if(!l_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY));
+//                    }
+//                }
+//            }
+//
+//        }
+//
+//
+//
+//        // Calculates bishop movement
+//        if (dragging.getId()  > 11 && dragging.getId() < 14 || dragging.getId()  > 27 && dragging.getId() < 30){
+//            for(float filler = .125f; filler < 1f; filler += .125f){
+//                //up-right
+//                if(!(curY - filler < .0625f || curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY - filler))){
+//                        ur_block = true;
+//                    }
+//                    if(!ur_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY - filler));
+//                    }
+//                }
+//                //up-left
+//                if(!(curY - filler < .0625f || curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY - filler))){
+//                        ul_block = true;
+//                    }
+//                    if(!ul_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY - filler));
+//                    }
+//                }
+//                //down-right
+//                if(!(curY + filler > .9375f || curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY + filler))){
+//                        dr_block = true;
+//                    }
+//                    if(!dr_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY + filler));
+//                    }
+//                }
+//                //down-left
+//                if(!(curY + filler > .9375f || curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY + filler))){
+//                        dl_block = true;
+//                    }
+//                    if(!dl_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY + filler));
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//
+//        // Calculates knight movement
+//        if (dragging.getId()  > 9 && dragging.getId() < 12 || dragging.getId()  > 25 && dragging.getId() < 28){
+//            //up2-right
+//            if(!(curY - 2*.125f < .0625f || curX + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + .125f, curY - 2*.125f))){
+//                    u_block = true;
+//                }
+//                if(!u_block){
+//                    poss_moves.add(new Pair<>(curX + .125f, curY - 2*.125f));
+//                }
+//                u_block = false;
+//            }
+//            //up-right2
+//            if(!(curY - .125f < .0625f || curX + 2*.125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + 2*.125f, curY - .125f))){
+//                    r_block = true;
+//                }
+//                if(!r_block){
+//                    poss_moves.add(new Pair<>(curX + 2*.125f, curY - .125f));
+//                }
+//                r_block = false;
+//            }
+//            //up2-left
+//            if(!(curY - 2*.125f < .0625f || curX - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - .125f, curY - 2*.125f))){
+//                    l_block = true;
+//                }
+//                if(!l_block){
+//                    poss_moves.add(new Pair<>(curX - .125f, curY - 2*.125f));
+//                }
+//                l_block = false;
+//            }
+//            //up-left2
+//            if(!(curY - .125f < .0625f || curX - 2*.125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - 2*.125f, curY - .125f))){
+//                    d_block = true;
+//                }
+//                if(!d_block){
+//                    poss_moves.add(new Pair<>(curX - 2*.125f, curY - .125f));
+//                }
+//                d_block = false;
+//            }
+//            //down2-right
+//            if(!(curY + 2*.125f > .9375f || curX + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + .125f, curY + 2*.125f))){
+//                    ur_block = true;
+//                }
+//                if(!ur_block){
+//                    poss_moves.add(new Pair<>(curX + .125f, curY + 2*.125f));
+//                }
+//                ur_block = false;
+//            }
+//            //down-right2
+//            if(!(curY + .125f > .9375f || curX + 2*.125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + 2*.125f, curY + .125f))){
+//                    ul_block = true;
+//                }
+//                if(!ul_block){
+//                    poss_moves.add(new Pair<>(curX + 2*.125f, curY + .125f));
+//                }
+//                ul_block = false;
+//            }
+//            //down2-left
+//            if(!(curY + 2*.125f > .9375f || curX - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - .125f, curY + 2*.125f))){
+//                    dr_block = true;
+//                }
+//                if(!dr_block){
+//                    poss_moves.add(new Pair<>(curX - .125f, curY + 2*.125f));
+//                }
+//                dr_block = false;
+//            }
+//            //down-left2
+//            if(!(curY + .125f > .9375f || curX - 2*.125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - 2*.125f, curY + .125f))){
+//                    dl_block = true;
+//                }
+//                if(!dl_block){
+//                    poss_moves.add(new Pair<>(curX - 2*.125f, curY + .125f));
+//                }
+//                dl_block = false;
+//            }
+//        }
+//
+//
+//
+//        // Calculates queen movement
+//        if (dragging.getId()  == 14 || dragging.getId()  == 30){
+//
+//            for(float filler = .125f; filler < 1f; filler += .125f){
+//                //move up
+//                if(!(curY - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX, curY - filler))){
+//                        u_block = true;
+//                    }
+//                    if(!u_block){
+//                        poss_moves.add(new Pair<>(curX, curY - filler));
+//                    }
+//
+//                }
+//                //move down
+//                if(!(curY + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX, curY + filler))){
+//                        d_block = true;
+//                    }
+//                    if(!d_block){
+//                        poss_moves.add(new Pair<>(curX, curY + filler));
+//                    }
+//
+//                }
+//                //move right
+//                if(!(curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY))){
+//                        r_block = true;
+//                    }
+//                    if(!r_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY));
+//                    }
+//                }
+//                //move left
+//                if(!(curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY))){
+//                        l_block = true;
+//                    }
+//                    if(!l_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY));
+//                    }
+//                }
+//
+//
+//                //up-right
+//                if(!(curY - filler < .0625f || curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY - filler))){
+//                        ur_block = true;
+//                    }
+//                    if(!ur_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY - filler));
+//                    }
+//                }
+//                //up-left
+//                if(!(curY - filler < .0625f || curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY - filler))){
+//                        ul_block = true;
+//                    }
+//                    if(!ul_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY - filler));
+//                    }
+//                }
+//                //down-right
+//                if(!(curY + filler > .9375f || curX + filler > .9375f)){
+//                    if(white_positions.contains(new Pair<>(curX + filler, curY + filler))){
+//                        dr_block = true;
+//                    }
+//                    if(!dr_block){
+//                        poss_moves.add(new Pair<>(curX + filler, curY + filler));
+//                    }
+//                }
+//                //down-left
+//                if(!(curY + filler > .9375f || curX - filler < .0625f)){
+//                    if(white_positions.contains(new Pair<>(curX - filler, curY + filler))){
+//                        dl_block = true;
+//                    }
+//                    if(!dl_block){
+//                        poss_moves.add(new Pair<>(curX - filler, curY + filler));
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//
+//        // Calculates king movement
+//        if (dragging.getId()  == 15 || dragging.getId() == 31){
+//            //move up
+//            if(!(curY - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
+//                    u_block = true;
+//                }
+//                if(!u_block){
+//                    poss_moves.add(new Pair<>(curX, curY - .125f));
+//                }
+//            }
+//            //move down
+//            if(!(curY + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX, curY + .125f))){
+//                    d_block = true;
+//                }
+//                if(!d_block){
+//                    poss_moves.add(new Pair<>(curX, curY + .125f));
+//                }
+//            }
+//            //move right
+//            if(!(curX + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + .125f, curY))){
+//                    r_block = true;
+//                }
+//                if(!r_block){
+//                    poss_moves.add(new Pair<>(curX + .125f, curY));
+//                }
+//            }
+//            //move left
+//            if(!(curX - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - .125f, curY))){
+//                    l_block = true;
+//                }
+//                if(!l_block){
+//                    poss_moves.add(new Pair<>(curX - .125f, curY));
+//                }
+//            }
+//
+//            //up-right
+//            if(!(curY - .125f < .0625f || curX + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + .125f, curY - .125f))){
+//                    ur_block = true;
+//                }
+//                if(!ur_block){
+//                    poss_moves.add(new Pair<>(curX + .125f, curY - .125f));
+//                }
+//            }
+//            //up-left
+//            if(!(curY - .125f < .0625f || curX - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - .125f, curY - .125f))){
+//                    ul_block = true;
+//                }
+//                if(!ul_block){
+//                    poss_moves.add(new Pair<>(curX - .125f, curY - .125f));
+//                }
+//            }
+//            //down-right
+//            if(!(curY + .125f > .9375f || curX + .125f > .9375f)){
+//                if(white_positions.contains(new Pair<>(curX + .125f, curY + .125f))){
+//                    dr_block = true;
+//                }
+//                if(!dr_block){
+//                    poss_moves.add(new Pair<>(curX + .125f, curY + .125f));
+//                }
+//            }
+//            //down-left
+//            if(!(curY + .125f > .9375f || curX - .125f < .0625f)){
+//                if(white_positions.contains(new Pair<>(curX - .125f, curY + .125f))){
+//                    dl_block = true;
+//                }
+//                if(!dl_block){
+//                    poss_moves.add(new Pair<>(curX - .125f, curY + .125f));
+//                }
+//            }
+//
+//        }
 
         return poss_moves;
     }
