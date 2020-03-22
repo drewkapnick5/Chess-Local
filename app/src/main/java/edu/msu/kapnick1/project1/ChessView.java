@@ -98,11 +98,13 @@ public class ChessView extends View {
     }
 
     /**
-     *
+     * Go to the next player's turn
+     * @return boolean if the game is won
      */
-    public void nextTurn() {
-        chessBoard.nextTurn(this);
+    public boolean nextTurn() {
+        boolean won = chessBoard.nextTurn(this);
         invalidate();
+        return won;
     }
 
     public void setWinner() {
@@ -111,6 +113,10 @@ public class ChessView extends View {
 
     public String getCurrentPlayer() {
         return chessBoard.getPlayer();
+    }
+
+    public String getOtherPlayer() {
+        return chessBoard.getOtherPlayer();
     }
 
 

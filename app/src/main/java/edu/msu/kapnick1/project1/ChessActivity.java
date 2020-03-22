@@ -58,12 +58,20 @@ public class ChessActivity extends AppCompatActivity {
      * Go to next player turn
      */
     public void nextTurn(View view) {
-        getChessView().nextTurn();
+        if (getChessView().nextTurn()){
+            win(getChessView().getOtherPlayer());
+        }
     }
 
     public void resign(View view) {
-        getChessView().nextTurn();
-        getChessView().setWinner();
+        win(getChessView().getOtherPlayer());
+    }
+
+    public void win(String winner) {
+        Intent intent = new Intent(this, WinActivity.class);
+        intent.putExtra(WinActivity.WINNER_KEY, winner);
+
+        startActivity(intent);
     }
 
 }
