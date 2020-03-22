@@ -2,6 +2,7 @@ package edu.msu.kapnick1.project1.Piece;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.util.Pair;
@@ -12,9 +13,10 @@ import java.util.List;
 
 public class Piece {
 
-
-    protected float beforeDragX;
-    protected float beforeDragY;
+    /**
+     * The image for the actual piece.
+     */
+    protected Bitmap piece;
 
     /**
      * We consider a valid move for a piece if it is within SNAP_DISTANCE
@@ -30,8 +32,8 @@ public class Piece {
         params.id = id;
         params.x = initialX;
         params.y = initialY;
-        beforeDragX = params.x;
-        beforeDragY = params.y;
+        params.beforeDragX = params.x;
+        params.beforeDragY = params.y;
         params.color = white;
     }
 
@@ -57,10 +59,10 @@ public class Piece {
             canvas.scale(scaleFactor / 4, scaleFactor / 4);
 
             // This magic code makes the center of the piece at 0, 0
-            canvas.translate(-params.piece.getWidth() / 2f, -params.piece.getHeight() / 2f);
+            canvas.translate(-piece.getWidth() / 2f, -piece.getHeight() / 2f);
 
             // Draw the bitmap
-            canvas.drawBitmap(params.piece, 0, 0, null);
+            canvas.drawBitmap(piece, 0, 0, null);
             canvas.restore();
         }
     }
@@ -78,18 +80,18 @@ public class Piece {
 
         // Make relative to the location and size to the piece size
         int pX = (int)((testX - params.x) * boardSize / scaleFactor) +
-                params.piece.getWidth() / 2;
+                piece.getWidth() / 2;
         int pY = (int)((testY - params.y) * boardSize / scaleFactor) +
-                params.piece.getHeight() / 2;
+                piece.getHeight() / 2;
 
-        if(pX < 0 || pX >= params.piece.getWidth() ||
-                pY < 0 || pY >= params.piece.getHeight()) {
+        if(pX < 0 || pX >= piece.getWidth() ||
+                pY < 0 || pY >= piece.getHeight()) {
             return false;
         }
 
         // We are within the rectangle of the pawn.
         // Are we touching actual picture?
-        return (params.piece.getPixel(pX, pY) & 0xff000000) != 0;
+        return (piece.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
@@ -110,8 +112,8 @@ public class Piece {
      * Reset to position at before drag started
      */
     public void reset() {
-        params.x = beforeDragX;
-        params.y = beforeDragY;
+        params.x = params.beforeDragX;
+        params.y = params.beforeDragY;
         params.active = true;
     }
 
@@ -119,8 +121,8 @@ public class Piece {
      * After turn over, drags set to position piece was moved to
      */
     public void setDrags() {
-        beforeDragX = params.x;
-        beforeDragY = params.y;
+        params.beforeDragX = params.x;
+        params.beforeDragY = params.y;
     }
 
     /**
@@ -136,7 +138,7 @@ public class Piece {
      * @param x new value
      */
     public void setX(float x) {
-        params.x = beforeDragX = x;
+        params.x = params.beforeDragX = x;
     }
 
     /**
@@ -152,7 +154,7 @@ public class Piece {
      * @param y new value
      */
     public void setY(float y) {
-        params.y = beforeDragY = y;
+        params.y = params.beforeDragY = y;
     }
 
     /**
@@ -186,10 +188,18 @@ public class Piece {
     public void setColor(boolean color) { params.color = color; }
 
     /**
+     * Set the Bitmap id
+     * @param id Bitmap id
+     */
+    public void setBitmapID(int id) {
+        params.bitmapID = id;
+    }
+
+    /**
      * Set the image
      * @param piece Image set to
      */
-    public void setImagePath(Bitmap piece) { params.piece = piece; }
+    public void setImagePath(Bitmap piece) { this.piece = piece; }
 
     /**
      * Find if piece is active
@@ -197,6 +207,14 @@ public class Piece {
      */
     public boolean isActive() {
         return params.active;
+    }
+
+    public void setBeforeDragX(float x){
+        params.beforeDragX = x;
+    }
+
+    public void setBeforeDragY(float y){
+        params.beforeDragY = y;
     }
 
     /**
@@ -264,8 +282,8 @@ public class Piece {
 //            finalY -= .125f;
 //            return true;
 
-        params.x = beforeDragX;
-        params.y = beforeDragY;
+        params.x = params.beforeDragX;
+        params.y = params.beforeDragY;
 
         return false;
     }
@@ -294,22 +312,25 @@ public class Piece {
      * @param key key name to use in bundle
      * @param bundle bundle to load from
      */
-    public void getFromBundle(String key, Bundle bundle) {
+    public void getFromBundle(String key, Bundle bundle, Context context) {
         Parameters params = (Parameters)bundle.getSerializable(key);
 
         // Ensure the options are all set
         setColor(params.color);
-        setImagePath(params.piece);
+        setBitmapID(params.bitmapID);
+        setImagePath(BitmapFactory.decodeResource(context.getResources(), params.bitmapID));
         setX(params.x);
         setY(params.y);
+        setBeforeDragX(params.beforeDragX);
+        setBeforeDragY(params.beforeDragY);
         setActive(params.active);
     }
 
     protected static class Parameters implements Serializable {
         /**
-         * The image for the actual piece.
+         * Resource id for the piece bitmap
          */
-        protected Bitmap piece;
+        protected int bitmapID;
 
         /**
          * x location.
@@ -324,6 +345,9 @@ public class Piece {
          * NEEDS TO BE CHANGED
          */
         protected float y;
+
+        protected float beforeDragX;
+        protected float beforeDragY;
 
         /**
          * Piece color
