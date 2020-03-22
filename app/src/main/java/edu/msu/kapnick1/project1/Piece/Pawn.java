@@ -29,36 +29,61 @@ public class Pawn extends Piece{
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
 
-        List<Pair> positions = params.color ? white_positions : black_positions;
+        List<Pair> positions = new ArrayList<>(white_positions);
+        positions.addAll(black_positions);
+//        list.addAll(list2);
         List<Pair> otherPositions = !params.color ? white_positions : black_positions;
 
         boolean u_block = false;
         boolean d_block = false;
 
         if (params.color) {
+            // White pawn movement
             if(!(params.y - .125f < .0625f)){
                 if(!positions.contains(new Pair<>(params.x, params.y - .125f))){
                     poss_moves.add(new Pair<>(params.x, params.y - .125f));
+                } else { u_block = true; }
+                // Up-right
+                if (black_positions.contains(new Pair<>(params.x + .125f, params.y - .125f))) {
+                    poss_moves.add(new Pair<>(params.x + .125f, params.y - .125f));
                 }
+                // Up-left
+                if (black_positions.contains(new Pair<>(params.x - .125f, params.y - .125f))) {
+                    poss_moves.add(new Pair<>(params.x - .125f, params.y - .125f));
+                }
+
             }
             //determine move from initial position
-            if (params.y == .8125f){
+            if (params.y == .8125f && !u_block){
                 if(!positions.contains(new Pair<>(params.x, params.y - .25f))){
                     poss_moves.add(new Pair<>(params.x, params.y - .25f));
                 }
             }
-        } else {
+
+        }
+        // Black pawn movement
+        else {
             if(!(params.y + .125f > .9375f)){
                 if(!positions.contains(new Pair<>(params.x, params.y + .125f))){
                     poss_moves.add(new Pair<>(params.x, params.y + .125f));
+                } else { d_block = true; }
+
+                // Down-right
+                if(white_positions.contains(new Pair<>(params.x + .125f, params.y + .125f))){
+                    poss_moves.add(new Pair<>(params.x + .125f, params.y + .125f));
+                }
+                // Down-left
+                if(white_positions.contains(new Pair<>(params.x - .125f, params.y + .125f))){
+                    poss_moves.add(new Pair<>(params.x - .125f, params.y + .125f));
                 }
             }
             //determine move from initial position
-            if (params.y == .1875f){
+            if (params.y == .1875f && !d_block){
                 if(!positions.contains(new Pair<>(params.x, params.y + .25f))){
                     poss_moves.add(new Pair<>(params.x, params.y + .25f));
                 }
             }
+
         }
 
         return poss_moves;
