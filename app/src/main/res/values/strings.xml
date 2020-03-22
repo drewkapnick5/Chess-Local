@@ -8,4 +8,6 @@
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>
     <string name="resign">Resign</string>
+    <string name="finish">Finish</string>
+    <string name="winner">Winner!!</string>
 </resources>

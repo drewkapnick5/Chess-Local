@@ -302,8 +302,11 @@ public class ChessBoard {
 
     /**
      * Go to the next player's turn
+     * @param view ChessView
+     * @return boolean if the game is won
      */
-    public void nextTurn(final View view) {
+    public boolean nextTurn(final View view) {
+        boolean won = false;
         if (dragging!=null) {
             dragging.setDrags();
             if (dragging instanceof Pawn &&
@@ -347,10 +350,16 @@ public class ChessBoard {
 
             }
         }
-        if (remove) { pieces[r_index].remove(); }
+        if (remove) {
+            pieces[r_index].remove();
+            if (pieces[r_index] instanceof King){
+                won = true;
+            }
+        }
         remove = false;
         dragging = null;
         turn = (turn==1) ? 0 : 1;
+        return won;
     }
 
     /**
@@ -367,6 +376,14 @@ public class ChessBoard {
      */
     public String getPlayer() {
         return players.get(turn);
+    }
+
+    /**
+     * Get the player whos turn it is not currently
+     * @return String player name
+     */
+    public String getOtherPlayer() {
+        return players.get((turn + 1) % 2);
     }
 
     /**
