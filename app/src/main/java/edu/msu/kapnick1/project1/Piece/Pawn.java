@@ -36,7 +36,7 @@ public class Pawn extends Piece{
             }
             //determine move from initial position
             if (params.y == .8125f){
-                if(!positions.contains(new Pair<>(params.x, params.y - .125f))){
+                if(!positions.contains(new Pair<>(params.x, params.y - .25f))){
                     poss_moves.add(new Pair<>(params.x, params.y - .25f));
                 }
             }
@@ -48,7 +48,7 @@ public class Pawn extends Piece{
             }
             //determine move from initial position
             if (params.y == .1875f){
-                if(!positions.contains(new Pair<>(params.x, params.y + .125f))){
+                if(!positions.contains(new Pair<>(params.x, params.y + .25f))){
                     poss_moves.add(new Pair<>(params.x, params.y + .25f));
                 }
             }
