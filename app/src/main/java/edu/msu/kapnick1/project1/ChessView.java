@@ -85,7 +85,7 @@ public class ChessView extends View {
      */
     public void loadInstanceState(Bundle bundle) {
 //        chessBoard.loadInstanceState(bundle);
-        chessBoard.getFromBundle("board", bundle);
+        chessBoard.getFromBundle("board", bundle, getContext());
     }
 
     /**
@@ -107,6 +107,10 @@ public class ChessView extends View {
 
     public void setWinner() {
         winner = chessBoard.getPlayer();
+    }
+
+    public String getCurrentPlayer() {
+        return chessBoard.getPlayer();
     }
 
 

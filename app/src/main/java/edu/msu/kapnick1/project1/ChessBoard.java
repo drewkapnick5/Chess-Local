@@ -126,6 +126,11 @@ public class ChessBoard {
     private Piece dragging = null;
 
     /**
+     * index of the piece we are dragging in pieces array
+     */
+    private int dragIdx = -1;
+
+    /**
      * Most recent relative X touch when dragging
      */
     private float lastRelX;
@@ -281,6 +286,7 @@ public class ChessBoard {
         if (remove) { pieces[r_index].remove(); }
         remove = false;
         dragging = null;
+        dragIdx = -1;
     }
 
     /**
@@ -386,6 +392,7 @@ public class ChessBoard {
                     }
                     // We hit a piece!
                     dragging = pieces[p];
+                    dragIdx = p;
                     //two seperate lists for the positions of each piece on the board
                     //right now black can jump black pieces
                     //white cannot jump other white pieces but can land on black pieces
@@ -874,6 +881,7 @@ public class ChessBoard {
         }
 
         bundle.putInt("turn", turn);
+        bundle.putInt("dragInx", dragIdx);
     }
 
     /**
@@ -881,13 +889,17 @@ public class ChessBoard {
      * @param key key name to use in bundle
      * @param bundle bundle to load from
      */
-    public void getFromBundle(String key, Bundle bundle) {
+    public void getFromBundle(String key, Bundle bundle, Context context) {
 
 
         for (int i = 0; i < PIECE_COUNT; i++) {
-            pieces[i].getFromBundle(Integer.toString(i), bundle);
+            pieces[i].getFromBundle(Integer.toString(i), bundle, context);
         }
         turn = bundle.getInt("turn");
+        dragIdx = bundle.getInt("dragInx");
+        if (dragIdx != -1){
+            dragging = pieces[dragIdx];
+        }
     }
 
 }
