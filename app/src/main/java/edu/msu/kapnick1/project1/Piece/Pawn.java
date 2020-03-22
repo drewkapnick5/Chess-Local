@@ -26,8 +26,15 @@ public class Pawn extends Piece{
     }
 
     @Override
-    public List<Pair> checkMoves(List<Pair> positions, List<Pair> black_positions) {
+    public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
+
+        List<Pair> positions = params.color ? white_positions : black_positions;
+        List<Pair> otherPositions = !params.color ? white_positions : black_positions;
+
+        boolean u_block = false;
+        boolean d_block = false;
+
         if (params.color) {
             if(!(params.y - .125f < .0625f)){
                 if(!positions.contains(new Pair<>(params.x, params.y - .125f))){

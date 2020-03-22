@@ -24,58 +24,60 @@ public class Knight extends Piece {
         float curY = params.y;
         float curX = params.x;
 
+        List<Pair> positions = params.color ? white_positions : black_positions;
+
         //up2-right
         if(!(curY - 2*.125f < .0625f || curX + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + .125f, curY - 2*.125f))){
+            if(!positions.contains(new Pair<>(curX + .125f, curY - 2*.125f))){
                 poss_moves.add(new Pair<>(curX + .125f, curY - 2*.125f));
             }
 //            u_block = false;
         }
         //up-right2
         if(!(curY - .125f < .0625f || curX + 2*.125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + 2*.125f, curY - .125f))){
+            if(!positions.contains(new Pair<>(curX + 2*.125f, curY - .125f))){
                 poss_moves.add(new Pair<>(curX + 2*.125f, curY - .125f));
             }
 //            r_block = false;
         }
         //up2-left
         if(!(curY - 2*.125f < .0625f || curX - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - .125f, curY - 2*.125f))){
+            if(!positions.contains(new Pair<>(curX - .125f, curY - 2*.125f))){
                 poss_moves.add(new Pair<>(curX - .125f, curY - 2*.125f));
             }
 //            l_block = false;
         }
         //up-left2
         if(!(curY - .125f < .0625f || curX - 2*.125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - 2*.125f, curY - .125f))){
+            if(!positions.contains(new Pair<>(curX - 2*.125f, curY - .125f))){
                 poss_moves.add(new Pair<>(curX - 2*.125f, curY - .125f));
             }
 //            d_block = false;
         }
         //down2-right
         if(!(curY + 2*.125f > .9375f || curX + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + .125f, curY + 2*.125f))){
+            if(!positions.contains(new Pair<>(curX + .125f, curY + 2*.125f))){
                 poss_moves.add(new Pair<>(curX + .125f, curY + 2*.125f));
             }
 //            ur_block = false;
         }
         //down-right2
         if(!(curY + .125f > .9375f || curX + 2*.125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + 2*.125f, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX + 2*.125f, curY + .125f))){
                 poss_moves.add(new Pair<>(curX + 2*.125f, curY + .125f));
             }
 //            ul_block = false;
         }
         //down2-left
         if(!(curY + 2*.125f > .9375f || curX - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - .125f, curY + 2*.125f))){
+            if(!positions.contains(new Pair<>(curX - .125f, curY + 2*.125f))){
                 poss_moves.add(new Pair<>(curX - .125f, curY + 2*.125f));
             }
 //            dr_block = false;
         }
         //down-left2
         if(!(curY + .125f > .9375f || curX - 2*.125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - 2*.125f, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX - 2*.125f, curY + .125f))){
 //                dl_block = true;
 //            }
 //            if(!dl_block){

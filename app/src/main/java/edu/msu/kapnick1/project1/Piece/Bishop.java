@@ -29,41 +29,56 @@ public class Bishop extends Piece {
         boolean dr_block = false;
         boolean dl_block = false;
 
+        List<Pair> samePositions = params.color ? white_positions : black_positions;
+        List<Pair> otherPositions = !params.color ? white_positions : black_positions;
+
         for(float filler = .125f; filler < 1f; filler += .125f){
             //up-right
             if(!(curY - filler < .0625f || curX + filler > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + filler, curY - filler))){
+                if(samePositions.contains(new Pair<>(curX + filler, curY - filler))){
                     ur_block = true;
                 }
                 if(!ur_block){
                     poss_moves.add(new Pair<>(curX + filler, curY - filler));
+                    if(otherPositions.contains(new Pair<>(curX + filler, curY - filler))){
+                        ur_block = true;
+                    }
                 }
             }
             //up-left
             if(!(curY - filler < .0625f || curX - filler < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - filler, curY - filler))){
+                if(samePositions.contains(new Pair<>(curX - filler, curY - filler))){
                     ul_block = true;
                 }
                 if(!ul_block){
                     poss_moves.add(new Pair<>(curX - filler, curY - filler));
+                    if(otherPositions.contains(new Pair<>(curX - filler, curY - filler))){
+                        ul_block = true;
+                    }
                 }
             }
             //down-right
             if(!(curY + filler > .9375f || curX + filler > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + filler, curY + filler))){
+                if(samePositions.contains(new Pair<>(curX + filler, curY + filler))){
                     dr_block = true;
                 }
                 if(!dr_block){
                     poss_moves.add(new Pair<>(curX + filler, curY + filler));
+                    if(otherPositions.contains(new Pair<>(curX + filler, curY + filler))){
+                        dr_block = true;
+                    }
                 }
             }
             //down-left
             if(!(curY + filler > .9375f || curX - filler < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - filler, curY + filler))){
+                if(samePositions.contains(new Pair<>(curX - filler, curY + filler))){
                     dl_block = true;
                 }
                 if(!dl_block){
                     poss_moves.add(new Pair<>(curX - filler, curY + filler));
+                    if(otherPositions.contains(new Pair<>(curX - filler, curY + filler))){
+                        dl_block = true;
+                    }
                 }
             }
         }

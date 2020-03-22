@@ -120,7 +120,7 @@ public class Queen extends Piece {
                 }
                 if(!dr_block){
                     poss_moves.add(new Pair<>(curX + filler, curY + filler));
-                    if(otherPositions.contains(new Pair<>(curX + filler, curY - filler))){
+                    if(otherPositions.contains(new Pair<>(curX + filler, curY + filler))){
                         dr_block = true;
                     }
                 }
