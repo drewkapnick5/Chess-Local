@@ -18,57 +18,60 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Pair> checkMoves(List<Pair> white_positions) {
+    public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
 
         float curX = params.x;
         float curY = params.y;
 
+        List<Pair> positions = params.color ? white_positions : black_positions;
+
+
         if(!(curY - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX, curY - .125f))){
                 poss_moves.add(new Pair<>(curX, curY - .125f));
             }
         }
         //move down
         if(!(curY + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX, curY + .125f))){
                 poss_moves.add(new Pair<>(curX, curY + .125f));
             }
         }
         //move right
         if(!(curX + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + .125f, curY))){
+            if(!positions.contains(new Pair<>(curX + .125f, curY))){
                 poss_moves.add(new Pair<>(curX + .125f, curY));
             }
         }
         //move left
         if(!(curX - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - .125f, curY))){
+            if(!positions.contains(new Pair<>(curX - .125f, curY))){
                 poss_moves.add(new Pair<>(curX - .125f, curY));
             }
         }
 
         //up-right
         if(!(curY - .125f < .0625f || curX + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + .125f, curY - .125f))){
+            if(!positions.contains(new Pair<>(curX + .125f, curY - .125f))){
                 poss_moves.add(new Pair<>(curX + .125f, curY - .125f));
             }
         }
         //up-left
         if(!(curY - .125f < .0625f || curX - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - .125f, curY - .125f))){
+            if(!positions.contains(new Pair<>(curX - .125f, curY - .125f))){
                 poss_moves.add(new Pair<>(curX - .125f, curY - .125f));
             }
         }
         //down-right
         if(!(curY + .125f > .9375f || curX + .125f > .9375f)){
-            if(!white_positions.contains(new Pair<>(curX + .125f, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX + .125f, curY + .125f))){
                 poss_moves.add(new Pair<>(curX + .125f, curY + .125f));
             }
         }
         //down-left
         if(!(curY + .125f > .9375f || curX - .125f < .0625f)){
-            if(!white_positions.contains(new Pair<>(curX - .125f, curY + .125f))){
+            if(!positions.contains(new Pair<>(curX - .125f, curY + .125f))){
                 poss_moves.add(new Pair<>(curX - .125f, curY + .125f));
             }
         }

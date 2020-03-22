@@ -92,8 +92,8 @@ public class Piece {
         return (params.piece.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
-    public List<Pair> checkMoves(List<Pair> positions) {
-        return positions;
+    public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
+        return white_positions;
     }
 
     /**

@@ -461,12 +461,13 @@ public class ChessBoard {
 
     private List<Pair> calc_moves(){
 
-        if (dragging.getId() < 16) {
-            poss_moves = dragging.checkMoves(white_positions);
-        } else {
-            poss_moves = dragging.checkMoves(black_positions);
-        }
+//        if (dragging.getId() < 16) {
+//            poss_moves = dragging.checkMoves(white_positions);
+//        } else {
+//            poss_moves = dragging.checkMoves(black_positions);
+//        }
 
+        return dragging.checkMoves(white_positions, black_positions);
 
 //        // Calculates white pawn movement
 //        if (dragging.getId() < 8 || (dragging.getId() > 15 && dragging.getId() < 24)){
@@ -856,7 +857,7 @@ public class ChessBoard {
 //
 //        }
 
-        return poss_moves;
+//        return poss_moves;
     }
 
     /**

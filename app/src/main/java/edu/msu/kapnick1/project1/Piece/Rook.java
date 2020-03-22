@@ -18,11 +18,14 @@ public class Rook extends Piece {
     }
 
     @Override
-    public List<Pair> checkMoves(List<Pair> white_positions) {
+    public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
 
         float curX = params.x;
         float curY = params.y;
+
+        List<Pair> samePositions = params.color ? white_positions : black_positions;
+        List<Pair> otherPositions = !params.color ? white_positions : black_positions;
 
         boolean u_block = false;
         boolean d_block = false;
@@ -32,40 +35,52 @@ public class Rook extends Piece {
         for(float filler = .125f; filler < 1f; filler += .125f){
             //move up
             if(!(curY - filler < .0625f)){
-                if(white_positions.contains(new Pair<>(curX, curY - filler))){
+                if(samePositions.contains(new Pair<>(curX, curY - filler))){
                     u_block = true;
                 }
                 if(!u_block){
                     poss_moves.add(new Pair<>(curX, curY - filler));
+                    if (otherPositions.contains(new Pair<>(curX, curY - filler))) {
+                        u_block = true;
+                    }
                 }
 
             }
             //move down
             if(!(curY + filler > .9375f)){
-                if(white_positions.contains(new Pair<>(curX, curY + filler))){
+                if(samePositions.contains(new Pair<>(curX, curY + filler))){
                     d_block = true;
                 }
                 if(!d_block){
                     poss_moves.add(new Pair<>(curX, curY + filler));
+                    if (otherPositions.contains(new Pair<>(curX, curY + filler))) {
+                        d_block = true;
+                    }
                 }
 
             }
             //move right
             if(!(curX + filler > .9375f)){
-                if(white_positions.contains(new Pair<>(curX + filler, curY))){
+                if(samePositions.contains(new Pair<>(curX + filler, curY))){
                     r_block = true;
                 }
                 if(!r_block){
                     poss_moves.add(new Pair<>(curX + filler, curY));
+                    if (otherPositions.contains(new Pair<>(curX + filler, curY))) {
+                        r_block = true;
+                    }
                 }
             }
             //move left
             if(!(curX - filler < .0625f)){
-                if(white_positions.contains(new Pair<>(curX - filler, curY))){
+                if(samePositions.contains(new Pair<>(curX - filler, curY))){
                     l_block = true;
                 }
                 if(!l_block){
                     poss_moves.add(new Pair<>(curX - filler, curY));
+                    if (otherPositions.contains(new Pair<>(curX - filler, curY))) {
+                        l_block = true;
+                    }
                 }
             }
         }

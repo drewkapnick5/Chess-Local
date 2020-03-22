@@ -18,7 +18,7 @@ public class Bishop extends Piece {
     }
 
     @Override
-    public List<Pair> checkMoves(List<Pair> white_positions) {
+    public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
 
         float curX = params.x;
