@@ -24,11 +24,15 @@ public class Piece {
     protected final static float SNAP_DISTANCE = 0.07f;
 
 
+    /**
+     * Constructor
+     * @param context context of the view
+     * @param id index of the piece
+     * @param initialX X location of initial draw
+     * @param initialY Y location of initial draw
+     * @param white Color of the piece
+     */
     public Piece(Context context, int id, float initialX, float initialY, boolean white) {
-        /*this.finalX = finalX;
-        this.finalY = finalY;
-        this.possX = possX;*/
-        //this.possY = possY;
         params.id = id;
         params.x = initialX;
         params.y = initialY;
@@ -51,8 +55,6 @@ public class Piece {
             canvas.save();
 
             // Convert x,y to pixels and add the margin, then draw
-            //x = finalX;
-            //y = finalY;
             canvas.translate(marginX + params.x * boardSize, marginY + params.y * boardSize);
 
             // Scale it to the right size
@@ -94,6 +96,12 @@ public class Piece {
         return (piece.getPixel(pX, pY) & 0xff000000) != 0;
     }
 
+    /**
+     * Checks the possible moves for this piece
+     * @param white_positions Positions for all white pieces on the board
+     * @param black_positions Positions for all black pieces on the board
+     * @return List<Pair> Locations of all the spaces the piece can be placed
+     */
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         return white_positions;
     }
@@ -209,10 +217,18 @@ public class Piece {
         return params.active;
     }
 
+    /**
+     * Reset X drag
+     * @param x X location
+     */
     public void setBeforeDragX(float x){
         params.beforeDragX = x;
     }
 
+    /**
+     * Reset Y drag
+     * @param y Y location
+     */
     public void setBeforeDragY(float y){
         params.beforeDragY = y;
     }
@@ -225,13 +241,12 @@ public class Piece {
         params.active = active;
     }
 
+    /**
+     * Piece captured and is no longer part of the game
+     */
     public void remove() {
         params.active = false;
     }
-
-    public Parameters getParams() { return params; }
-
-    public void setParams(Parameters params) {this.params = params;}
 
     /**
      * If we are within SNAP_DISTANCE of the correct
@@ -239,23 +254,7 @@ public class Piece {
      * @return
      */
     public boolean maybeSnap(List<Pair> poss_moves) {
-//        for (float pX : possX && float pY : possY){
-//            if(Math.abs(x - finalX) < SNAP_DISTANCE &&
-//                    Math.abs(y - finalY)  < SNAP_DISTANCE) {
-//
-//                x = finalX;
-//                y = finalY;
-//                beforeDragX = x;
-//                beforeDragY = y;
-//                //finalX += .125f;
-//                finalY -= .125f;
-//                return true;
-//            }
-//            x = beforeDragX;
-//            y = beforeDragY;
-//
-//            return false;
-//        }
+
         for (int i = 0, j = 1; i < poss_moves.size(); i++, j+= 2) {
             Pair<Float, Float> pair = poss_moves.get(i);
             float finalX = pair.first;
@@ -266,36 +265,15 @@ public class Piece {
 
                 params.x = finalX;
                 params.y = finalY;
-//                beforeDragX = params.x;
-//                beforeDragY = params.y;
-                //finalX += .125f;
-                finalY -= .125f;
                 return true;
             }
         }
-
-//            params.x = finalX;
-//            params.y = finalY;
-//            beforeDragX = params.x;
-//            beforeDragY = params.y;
-//            //finalX += .125f;
-//            finalY -= .125f;
-//            return true;
 
         params.x = params.beforeDragX;
         params.y = params.beforeDragY;
 
         return false;
     }
-
-    /**
-     * Determine if this piece is snapped in place
-     * @return true if snapped into place
-     */
-
-//    public boolean isSnapped() {
-//        return maybeSnap();
-//    }
 
 
     /**
@@ -368,6 +346,9 @@ public class Piece {
 
     }
 
+    /**
+     * Parameters describing the state of the piece
+     */
     protected Parameters params = new Parameters();
 
 }
