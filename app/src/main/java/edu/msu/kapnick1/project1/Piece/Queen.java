@@ -17,6 +17,12 @@ public class Queen extends Piece {
         piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
     }
 
+    public Queen(Context context, Piece.Parameters params) {
+        super(context, params);
+        params.bitmapID = params.color ? R.drawable.chess_qlt45 : R.drawable.chess_qdt45;
+        piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
+    }
+
     @Override
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();

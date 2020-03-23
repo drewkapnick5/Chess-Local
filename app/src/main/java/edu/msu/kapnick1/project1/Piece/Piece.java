@@ -42,6 +42,20 @@ public class Piece {
     }
 
     /**
+     * Constructor
+     * @param context context of the view
+     * @param params piece parameters
+     */
+    public Piece(Context context, Parameters params){
+        this.params.id = params.id;
+        this.params.x = params.x;
+        this.params.y = params.y;
+        this.params.beforeDragX = params.beforeDragX;
+        this.params.beforeDragY = params.beforeDragY;
+        this.params.color = params.color;
+    }
+
+    /**
      * Draw the chess piece
      * @param canvas Canvas we are drawing on
      * @param marginX Margin x value in pixels
@@ -302,6 +316,10 @@ public class Piece {
         setBeforeDragX(params.beforeDragX);
         setBeforeDragY(params.beforeDragY);
         setActive(params.active);
+    }
+
+    public Parameters getParameters(){
+        return params;
     }
 
     protected static class Parameters implements Serializable {

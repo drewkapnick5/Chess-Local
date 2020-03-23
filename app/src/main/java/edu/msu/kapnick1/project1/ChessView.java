@@ -101,7 +101,7 @@ public class ChessView extends View {
      *
      */
     public void nextTurn() {
-        chessBoard.nextTurn();
+        chessBoard.nextTurn(this);
         invalidate();
     }
 

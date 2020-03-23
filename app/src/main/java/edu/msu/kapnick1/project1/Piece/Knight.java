@@ -17,6 +17,11 @@ public class Knight extends Piece {
         piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
     }
 
+    public Knight(Context context, Parameters params) {
+        super(context, params);
+        params.bitmapID = params.color ? R.drawable.chess_nlt45 : R.drawable.chess_ndt45;
+        piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
+    }
 
     @Override
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {

@@ -1,6 +1,8 @@
 package edu.msu.kapnick1.project1;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -11,6 +13,7 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 
+import java.lang.reflect.Array;
 import java.nio.channels.FileLock;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,11 +129,6 @@ public class ChessBoard {
     private Piece dragging = null;
 
     /**
-     * index of the piece we are dragging in pieces array
-     */
-    private int dragIdx = -1;
-
-    /**
      * Most recent relative X touch when dragging
      */
     private float lastRelX;
@@ -174,6 +172,9 @@ public class ChessBoard {
      * The player names in the game
      */
     private ArrayList<String> players = new ArrayList<>();
+
+    private ArrayList<Integer> promotionIds = new ArrayList<>();
+    private ArrayList<String> promotions = new ArrayList<>();
 
     /**
      * Constructor
@@ -305,13 +306,54 @@ public class ChessBoard {
     /**
      * Go to the next player's turn
      */
-    public void nextTurn() {
-        turn = (turn==1) ? 0 : 1;
-        if (dragging!=null) { dragging.setDrags(); }
+    public void nextTurn(final View view) {
+        if (dragging!=null) {
+            dragging.setDrags();
+            if (dragging instanceof Pawn &&
+                    ((dragging.isWhite() && dragging.getY() == rows[0])
+                    || (dragging.isBlack() && dragging.getY() == rows[7]))){
+                final int id = dragging.getId();
+                final Piece copy = dragging;
+                final Context context = view.getContext();
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Select a piece to promote to:");
+                String[] names = {"Queen", "Rook", "Knight", "Bishop"};
+                builder.setItems(names, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which){
+                            case 0:
+                                pieces[id] = new Queen(context, copy.getParameters());
+                                promotionIds.add(copy.getId());
+                                promotions.add("Queen");
+                                break;
+                            case 1:
+                                pieces[id] = new Rook(context, copy.getParameters());
+                                promotionIds.add(copy.getId());
+                                promotions.add("Rook");
+                                break;
+                            case 2:
+                                pieces[id] = new Knight(context, copy.getParameters());
+                                promotionIds.add(copy.getId());
+                                promotions.add("Knight");
+                                break;
+                            case 3:
+                                pieces[id] = new Bishop(context, copy.getParameters());
+                                promotionIds.add(copy.getId());
+                                promotions.add("Bishop");
+                                break;
+                        }
+                        view.invalidate();
+                    }
+                });
+                builder.create().show();
+
+            }
+        }
         if (remove) { pieces[r_index].remove(); }
         remove = false;
         dragging = null;
-        dragIdx = -1;
+        turn = (turn==1) ? 0 : 1;
     }
 
     /**
@@ -421,7 +463,6 @@ public class ChessBoard {
                     }
                     // We hit a piece!
                     dragging = pieces[p];
-                    dragIdx = p;
 
                     // Two separate lists for the positions of each piece on the board
                     for(Piece piece : pieces) {
@@ -897,6 +938,29 @@ public class ChessBoard {
 //    }
 
     /**
+     * Reset promoted pawns when restoring state
+     */
+    public void setPromotions(Context context) {
+        for (int i = 0; i < promotionIds.size(); i++) {
+            int id = promotionIds.get(i);
+            switch (promotions.get(i)){
+                case "Queen":
+                    pieces[id] = new Queen(context, pieces[id].getParameters());
+                    break;
+                case "Rook":
+                    pieces[id] = new Rook(context, pieces[id].getParameters());
+                    break;
+                case "Knight":
+                    pieces[id] = new Knight(context, pieces[id].getParameters());
+                    break;
+                case "Bishop":
+                    pieces[id] = new Bishop(context, pieces[id].getParameters());
+                    break;
+            }
+        }
+    }
+
+    /**
      * Save the view state to a bundle
      * @param key key name to use in the bundle
      * @param bundle bundle to save to
@@ -909,8 +973,12 @@ public class ChessBoard {
             pieces[i].putToBundle(Integer.toString(i), bundle);
         }
 
+        bundle.putIntegerArrayList("promoId", promotionIds);
+        bundle.putStringArrayList("promos", promotions);
+
         bundle.putInt("turn", turn);
-        bundle.putInt("dragInx", dragIdx);
+        int dragid = (dragging == null ? -1 : dragging.getId());
+        bundle.putInt("dragIdx", dragid);
     }
 
     /**
@@ -924,8 +992,12 @@ public class ChessBoard {
         for (int i = 0; i < PIECE_COUNT; i++) {
             pieces[i].getFromBundle(Integer.toString(i), bundle, context);
         }
+        promotionIds = bundle.getIntegerArrayList("promoId");
+        promotions = bundle.getStringArrayList("promos");
+        setPromotions(context);
+
         turn = bundle.getInt("turn");
-        dragIdx = bundle.getInt("dragInx");
+        int dragIdx = bundle.getInt("dragIdx");
         if (dragIdx != -1){
             dragging = pieces[dragIdx];
         }

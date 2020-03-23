@@ -17,6 +17,12 @@ public class Bishop extends Piece {
         piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
     }
 
+    public Bishop(Context context, Parameters params) {
+        super(context, params);
+        params.bitmapID = params.color ? R.drawable.chess_blt45 : R.drawable.chess_bdt45;
+        piece = BitmapFactory.decodeResource(context.getResources(), params.bitmapID);
+    }
+
     @Override
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
