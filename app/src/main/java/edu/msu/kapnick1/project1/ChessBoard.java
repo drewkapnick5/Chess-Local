@@ -3,11 +3,13 @@ package edu.msu.kapnick1.project1;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.fonts.Font;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -171,6 +173,11 @@ public class ChessBoard {
      */
     private ArrayList<String> players = new ArrayList<>();
 
+    /**
+     * Check orientation
+     */
+    private boolean orient;
+
     private ArrayList<Integer> promotionIds = new ArrayList<>();
     private ArrayList<String> promotions = new ArrayList<>();
 
@@ -191,6 +198,7 @@ public class ChessBoard {
 
         playerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         playerPaint.setColor(Color.BLACK);
+
 
         columns[0] = col_init;
         rows[0] = row_init;
@@ -362,6 +370,11 @@ public class ChessBoard {
         return won;
     }
 
+    public boolean checkOrientation(Boolean orientation){
+        orient = orientation;
+        return orient;
+    }
+
     /**
      * Adds a player to the game
      * @param player Name of the player
@@ -406,6 +419,14 @@ public class ChessBoard {
         scaleFactor = (float)boardSize /
                 (float)emptyBoard.getWidth();
 
+        playerPaint.setTextSize(50f);
+        playerPaint.setTextAlign(Paint.Align.CENTER);
+        if(orient == Boolean.TRUE){
+            canvas.drawText(players.get(turn) + new String("'s turn"), marginX + boardSize/2, marginY/2, playerPaint);
+        }else{
+            canvas.drawText(players.get(turn) + new String("'s turn") , marginX/2, marginY + boardSize/2, playerPaint);
+        }
+//        canvas.drawText();
         // Draw the outline around board and empty board
         canvas.drawRect(marginX, marginY, marginX + boardSize, marginY + boardSize, outlinePaint);
         canvas.save();

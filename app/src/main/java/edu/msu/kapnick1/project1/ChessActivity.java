@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -21,12 +22,17 @@ public class ChessActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String name1 = intent.getExtras().getString("Player1");
         String name2 = intent.getExtras().getString("Player2");
+        Boolean orientation = Boolean.TRUE;
 
         name1 = (name1.equals("")) ? "Player1" : name1;
         name2 = (name2.equals("")) ? "Player2" : name2;
 
         getChessView().addPlayer(name1);
         getChessView().addPlayer(name2);
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            orientation = Boolean.FALSE;
+        }
+        getChessView().checkOrientation(orientation);
 
 
         if (savedInstanceState != null) {

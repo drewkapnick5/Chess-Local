@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 
@@ -60,7 +59,8 @@ public class ChessView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        canvas.drawText(chessBoard.getPlayer(), canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
+
+        //canvas.drawText(chessBoard.getPlayer() , canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
         chessBoard.draw(canvas);
     }
 
@@ -95,6 +95,10 @@ public class ChessView extends View {
     public void addPlayer(String player) {
 //        players.add(player);
         chessBoard.addPlayer(player);
+    }
+
+    public void checkOrientation(Boolean orientation){
+        chessBoard.checkOrientation(orientation);
     }
 
     /**
