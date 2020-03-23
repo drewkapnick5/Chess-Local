@@ -22,6 +22,12 @@ public class ChessView extends View {
         return chessBoard.onTouchEvent(this, event);
     }
 
+    @Override
+    public boolean performClick() {
+
+        return super.performClick();
+    }
+
     /**
      * The actual Chess Board
      */

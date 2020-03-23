@@ -15,7 +15,7 @@
         android:layout_weight="1"
         android:gravity="center"
         android:text="@string/welcome"
-        android:textSize="70dp"/>
+        android:textSize="70sp" />
 
     <EditText
         android:id="@+id/editPlayer1"

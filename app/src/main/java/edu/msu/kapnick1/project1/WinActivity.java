@@ -21,7 +21,8 @@ public class WinActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String winner = intent.getExtras().getString(WINNER_KEY);
         TextView winnerText = (TextView) this.findViewById(R.id.winner);
-        winnerText.setText("Congratulations " + winner + ", You are the winner!");
+        String win = "Congratulations " + winner + ", You are the winner!";
+        winnerText.setText(win);
     }
 
     /**
