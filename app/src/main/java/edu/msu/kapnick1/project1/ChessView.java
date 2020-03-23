@@ -27,9 +27,6 @@ public class ChessView extends View {
      */
     private ChessBoard chessBoard;
 
-    private Paint playerPaint;
-
-    private String winner = null;
     /**
      * Players in the game
      */
@@ -52,21 +49,12 @@ public class ChessView extends View {
 
     private void init(AttributeSet attrs, int defStyle) {
         chessBoard = new ChessBoard(getContext(), this);
-        playerPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        playerPaint.setColor(Color.BLACK);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        //canvas.drawText(chessBoard.getPlayer() , canvas.getWidth()/2, canvas.getHeight()/10, playerPaint);
         chessBoard.draw(canvas);
-    }
-
-
-    public ChessBoard getBoard() {
-        return chessBoard;
     }
 
     /**
@@ -74,7 +62,6 @@ public class ChessView extends View {
      * @param bundle The bundle we save to
      */
     public void saveInstanceState(Bundle bundle) {
-//        chessBoard.saveInstanceState(bundle);
         chessBoard.putToBundle("board", bundle);
 
     }
@@ -84,19 +71,21 @@ public class ChessView extends View {
      * @param bundle The bundle we save to
      */
     public void loadInstanceState(Bundle bundle) {
-//        chessBoard.loadInstanceState(bundle);
         chessBoard.getFromBundle("board", bundle, getContext());
     }
 
     /**
-     *
-     * @param player
+     * Add a player to the game
+     * @param player name
      */
     public void addPlayer(String player) {
-//        players.add(player);
         chessBoard.addPlayer(player);
     }
 
+    /**
+     * Check the orientation of the screen
+     * @param orientation
+     */
     public void checkOrientation(Boolean orientation){
         chessBoard.checkOrientation(orientation);
     }
@@ -111,14 +100,10 @@ public class ChessView extends View {
         return won;
     }
 
-    public void setWinner() {
-        winner = chessBoard.getPlayer();
-    }
-
-    public String getCurrentPlayer() {
-        return chessBoard.getPlayer();
-    }
-
+    /**
+     * Get the name of the players whose turn is next
+     * @return Player name
+     */
     public String getOtherPlayer() {
         return chessBoard.getOtherPlayer();
     }

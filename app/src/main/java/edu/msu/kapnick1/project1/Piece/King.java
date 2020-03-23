@@ -26,7 +26,7 @@ public class King extends Piece {
 
         List<Pair> positions = params.color ? white_positions : black_positions;
 
-
+        // Move up
         if(!(curY - .125f < .0625f)){
             if(!positions.contains(new Pair<>(curX, curY - .125f))){
                 poss_moves.add(new Pair<>(curX, curY - .125f));

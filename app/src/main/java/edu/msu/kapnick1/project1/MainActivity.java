@@ -10,12 +10,19 @@ import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
+    final static String PLAYER1 = "Player1";
+    final static String PLAYER2 = "Player2";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    /**
+     * Start the actual game
+     * @param view current view
+     */
     public void onStartChess(View view) {
         EditText edit = (EditText)findViewById(R.id.editPlayer1);
         EditText edit2 = (EditText)findViewById(R.id.editPlayer2);
@@ -24,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
         String name2 = edit2.getText().toString();
 
         Intent intent = new Intent(this, ChessActivity.class);
-        intent.putExtra("Player1", name1);
-        intent.putExtra("Player2", name2);
+        intent.putExtra(PLAYER1, name1);
+        intent.putExtra(PLAYER2, name2);
         startActivity(intent);
     }
 
+    /**
+     * Pull up instructions dialog
+     * @param view
+     */
     public void onInstructions(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
 
@@ -42,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
                 )
                 .create()
                 .show();
-
-//        builder.create().show();
     }
 
 

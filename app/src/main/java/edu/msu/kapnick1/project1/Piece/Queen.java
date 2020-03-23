@@ -30,9 +30,11 @@ public class Queen extends Piece {
         float curX = params.x;
         float curY = params.y;
 
+        // Same color positions and opposite color positions
         List<Pair> samePositions = params.color ? white_positions : black_positions;
         List<Pair> otherPositions = !params.color ? white_positions : black_positions;
 
+        // When true, a piece is in the way and cant be skipped
         boolean u_block = false;
         boolean d_block = false;
         boolean r_block = false;

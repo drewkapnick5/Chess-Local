@@ -275,6 +275,7 @@ public class Piece {
             float finalX = pair.first;
             float finalY = pair.second;
 
+            // If the piece is close to a valid space
             if (Math.abs(params.x - finalX) < SNAP_DISTANCE &&
                     Math.abs(params.y - finalY) < SNAP_DISTANCE) {
 
@@ -319,6 +320,10 @@ public class Piece {
         setActive(params.active);
     }
 
+    /**
+     * Get the parameters of a unique piece
+     * @return parameters
+     */
     public Parameters getParameters(){
         return params;
     }
@@ -333,13 +338,11 @@ public class Piece {
          * x location.
          * We use relative x locations in the range 0-1 for the center
          * of the chess piece.
-         * NEEDS TO BE CHANGED
          */
         protected float x;
 
         /**
          * y location
-         * NEEDS TO BE CHANGED
          */
         protected float y;
 

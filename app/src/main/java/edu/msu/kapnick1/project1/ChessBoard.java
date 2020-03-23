@@ -158,6 +158,7 @@ public class ChessBoard {
      * Whether or not a capture has happened
      */
     private boolean remove = false;
+
     /**
      * Index of captured piece
      */
@@ -178,7 +179,14 @@ public class ChessBoard {
      */
     private boolean orient;
 
+    /**
+     * Ids of promoted pieces
+     */
     private ArrayList<Integer> promotionIds = new ArrayList<>();
+
+    /**
+     * Type of promotions
+     */
     private ArrayList<String> promotions = new ArrayList<>();
 
     /**
@@ -320,9 +328,11 @@ public class ChessBoard {
             if (dragging instanceof Pawn &&
                     ((dragging.isWhite() && dragging.getY() == rows[0])
                     || (dragging.isBlack() && dragging.getY() == rows[7]))){
+                // Prompt pawn promotion
                 final int id = dragging.getId();
                 final Piece copy = dragging;
                 final Context context = view.getContext();
+                // Dialog box with promotion options
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Select a piece to promote to:");
                 String[] names = {"Queen", "Rook", "Knight", "Bishop"};
@@ -358,18 +368,25 @@ public class ChessBoard {
 
             }
         }
+        // Remove a piece
         if (remove) {
             pieces[r_index].remove();
             if (pieces[r_index] instanceof King){
                 won = true;
             }
         }
+        // Reset for next turn
         remove = false;
         dragging = null;
         turn = (turn==1) ? 0 : 1;
         return won;
     }
 
+    /**
+     * Check the current orientation of the device
+     * @param orientation device orientation
+     * @return device orientation
+     */
     public boolean checkOrientation(Boolean orientation){
         orient = orientation;
         return orient;
@@ -421,12 +438,13 @@ public class ChessBoard {
 
         playerPaint.setTextSize(50f);
         playerPaint.setTextAlign(Paint.Align.CENTER);
+        // Draw player name location based on the orientation of the device
         if(orient == Boolean.TRUE){
             canvas.drawText(players.get(turn) + new String("'s turn"), marginX + boardSize/2, marginY/2, playerPaint);
         }else{
             canvas.drawText(players.get(turn) + new String("'s turn") , marginX/2, marginY + boardSize/2, playerPaint);
         }
-//        canvas.drawText();
+
         // Draw the outline around board and empty board
         canvas.drawRect(marginX, marginY, marginX + boardSize, marginY + boardSize, outlinePaint);
         canvas.save();
@@ -435,6 +453,7 @@ public class ChessBoard {
         canvas.drawBitmap(emptyBoard, 0, 0, null);
         canvas.restore();
 
+        // Draw all the pieces
         for(Piece piece : pieces) {
             piece.draw(canvas, marginX, marginY, boardSize, scaleFactor);
         }

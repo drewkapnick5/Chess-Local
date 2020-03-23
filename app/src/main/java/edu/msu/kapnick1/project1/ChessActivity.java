@@ -54,8 +54,10 @@ public class ChessActivity extends AppCompatActivity {
 
     }
 
-
-
+    /**
+     * Get the chess view
+     * @return view
+     */
     public ChessView getChessView() {
         return (ChessView)this.findViewById(R.id.chessView);
     }
@@ -69,10 +71,18 @@ public class ChessActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Resign and set the winner
+     * @param view
+     */
     public void resign(View view) {
         win(getChessView().getOtherPlayer());
     }
 
+    /**
+     * Someone has won, show winning screen
+     * @param winner winner name
+     */
     public void win(String winner) {
         Intent intent = new Intent(this, WinActivity.class);
         intent.putExtra(WinActivity.WINNER_KEY, winner);

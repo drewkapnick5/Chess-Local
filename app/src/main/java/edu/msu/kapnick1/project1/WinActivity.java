@@ -24,6 +24,10 @@ public class WinActivity extends AppCompatActivity {
         winnerText.setText("Congratulations " + winner + ", You are the winner!");
     }
 
+    /**
+     * Prompt to new game screen
+     * @param view
+     */
     public void onFinish(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
