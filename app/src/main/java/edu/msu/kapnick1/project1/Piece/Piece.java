@@ -53,6 +53,7 @@ public class Piece {
         this.params.beforeDragX = params.beforeDragX;
         this.params.beforeDragY = params.beforeDragY;
         this.params.color = params.color;
+        this.params.active = params.active;
     }
 
     /**
