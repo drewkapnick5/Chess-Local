@@ -10,13 +10,6 @@ import java.util.List;
 import edu.msu.kapnick1.project1.R;
 
 
-/**
- * As of now:
- * IMPLEMENTED: Pawns all spawn in and can move up one space, return to original space if let go,
- * and update their next move location
- * NOT IMPLEMENTED: No attack movement, cannot see other pieces, other pieces will be able to land on
- * pawn, initial two space move not currently valid
- */
 public class Pawn extends Piece{
 
     public Pawn(Context context, int id, float initialX, float initialY, boolean white) {
@@ -29,11 +22,11 @@ public class Pawn extends Piece{
     public List<Pair> checkMoves(List<Pair> white_positions, List<Pair> black_positions) {
         List<Pair> poss_moves = new ArrayList<>();
 
+        // Determines if there are pieces in front of it
         List<Pair> positions = new ArrayList<>(white_positions);
         positions.addAll(black_positions);
-//        list.addAll(list2);
-        List<Pair> otherPositions = !params.color ? white_positions : black_positions;
 
+        // Blocked by a piece in front of it
         boolean u_block = false;
         boolean d_block = false;
 
