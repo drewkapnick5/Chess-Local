@@ -19,6 +19,7 @@ public class ChessView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        performClick();
         return chessBoard.onTouchEvent(this, event);
     }
 
